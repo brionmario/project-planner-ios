@@ -58,16 +58,40 @@
 		BFD689B12296C070003A5E85 /* project-planner-ipad */ = {
 			isa = PBXGroup;
 			children = (
+				BFD689CE2296D384003A5E85 /* View */,
+				BFD689CD2296D378003A5E85 /* Model */,
+				BFD689CC2296D344003A5E85 /* Controller */,
 				BFD689B22296C070003A5E85 /* AppDelegate.swift */,
-				BFD689B72296C070003A5E85 /* MasterViewController.swift */,
-				BFD689B92296C070003A5E85 /* DetailViewController.swift */,
-				BFD689BB2296C070003A5E85 /* Main.storyboard */,
 				BFD689BE2296C071003A5E85 /* Assets.xcassets */,
-				BFD689C02296C071003A5E85 /* LaunchScreen.storyboard */,
 				BFD689C32296C071003A5E85 /* Info.plist */,
 				BFD689C92296C175003A5E85 /* ProjectPlanner.xcdatamodeld */,
 			);
 			path = "project-planner-ipad";
+			sourceTree = "<group>";
+		};
+		BFD689CC2296D344003A5E85 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				BFD689B72296C070003A5E85 /* MasterViewController.swift */,
+				BFD689B92296C070003A5E85 /* DetailViewController.swift */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		BFD689CD2296D378003A5E85 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		BFD689CE2296D384003A5E85 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				BFD689BB2296C070003A5E85 /* Main.storyboard */,
+				BFD689C02296C071003A5E85 /* LaunchScreen.storyboard */,
+			);
+			path = View;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
