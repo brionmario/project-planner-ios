@@ -8,24 +8,24 @@
 
 /* Begin PBXBuildFile section */
 		BFD689B32296C070003A5E85 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFD689B22296C070003A5E85 /* AppDelegate.swift */; };
-		BFD689B62296C070003A5E85 /* project_planner_ipad.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = BFD689B42296C070003A5E85 /* project_planner_ipad.xcdatamodeld */; };
 		BFD689B82296C070003A5E85 /* MasterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFD689B72296C070003A5E85 /* MasterViewController.swift */; };
 		BFD689BA2296C070003A5E85 /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFD689B92296C070003A5E85 /* DetailViewController.swift */; };
 		BFD689BD2296C070003A5E85 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BFD689BB2296C070003A5E85 /* Main.storyboard */; };
 		BFD689BF2296C071003A5E85 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BFD689BE2296C071003A5E85 /* Assets.xcassets */; };
 		BFD689C22296C071003A5E85 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BFD689C02296C071003A5E85 /* LaunchScreen.storyboard */; };
+		BFD689CB2296C175003A5E85 /* ProjectPlanner.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = BFD689C92296C175003A5E85 /* ProjectPlanner.xcdatamodeld */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		BFD689AF2296C070003A5E85 /* project-planner-ipad.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "project-planner-ipad.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		BFD689B22296C070003A5E85 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		BFD689B52296C070003A5E85 /* project_planner_ipad.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = project_planner_ipad.xcdatamodel; sourceTree = "<group>"; };
 		BFD689B72296C070003A5E85 /* MasterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MasterViewController.swift; sourceTree = "<group>"; };
 		BFD689B92296C070003A5E85 /* DetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
 		BFD689BC2296C070003A5E85 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		BFD689BE2296C071003A5E85 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		BFD689C12296C071003A5E85 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		BFD689C32296C071003A5E85 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		BFD689CA2296C175003A5E85 /* ProjectPlanner.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = ProjectPlanner.xcdatamodel; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -65,7 +65,7 @@
 				BFD689BE2296C071003A5E85 /* Assets.xcassets */,
 				BFD689C02296C071003A5E85 /* LaunchScreen.storyboard */,
 				BFD689C32296C071003A5E85 /* Info.plist */,
-				BFD689B42296C070003A5E85 /* project_planner_ipad.xcdatamodeld */,
+				BFD689C92296C175003A5E85 /* ProjectPlanner.xcdatamodeld */,
 			);
 			path = "project-planner-ipad";
 			sourceTree = "<group>";
@@ -141,9 +141,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BFD689B62296C070003A5E85 /* project_planner_ipad.xcdatamodeld in Sources */,
 				BFD689B32296C070003A5E85 /* AppDelegate.swift in Sources */,
 				BFD689B82296C070003A5E85 /* MasterViewController.swift in Sources */,
+				BFD689CB2296C175003A5E85 /* ProjectPlanner.xcdatamodeld in Sources */,
 				BFD689BA2296C070003A5E85 /* DetailViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -346,13 +346,13 @@
 /* End XCConfigurationList section */
 
 /* Begin XCVersionGroup section */
-		BFD689B42296C070003A5E85 /* project_planner_ipad.xcdatamodeld */ = {
+		BFD689C92296C175003A5E85 /* ProjectPlanner.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
-				BFD689B52296C070003A5E85 /* project_planner_ipad.xcdatamodel */,
+				BFD689CA2296C175003A5E85 /* ProjectPlanner.xcdatamodel */,
 			);
-			currentVersion = BFD689B52296C070003A5E85 /* project_planner_ipad.xcdatamodel */;
-			path = project_planner_ipad.xcdatamodeld;
+			currentVersion = BFD689CA2296C175003A5E85 /* ProjectPlanner.xcdatamodel */;
+			path = ProjectPlanner.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;
 		};
