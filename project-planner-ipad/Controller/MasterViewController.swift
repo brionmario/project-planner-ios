@@ -52,15 +52,24 @@ class MasterViewController: UITableViewController, NSFetchedResultsControllerDel
             fatalError("Unresolved error \(nserror), \(nserror.userInfo)")
         }
     }
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        if let indexPath = tableView.indexPathForSelectedRow {
+            let object = fetchedResultsController.object(at: indexPath)
+            self.performSegue(withIdentifier: "showProjectDetails", sender: object)
+        }
+    }
+    
 
     // MARK: - Segues
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "showDetail" {
+        if segue.identifier == "showProjectDetails" {
+            print("showDetail")
             if let indexPath = tableView.indexPathForSelectedRow {
-            let object = fetchedResultsController.object(at: indexPath)
+                let object = fetchedResultsController.object(at: indexPath)
                 let controller = (segue.destination as! UINavigationController).topViewController as! DetailViewController
-                controller.detailItem = object
+                controller.selectedProject = object as? Project
                 controller.navigationItem.leftBarButtonItem = splitViewController?.displayModeButtonItem
                 controller.navigationItem.leftItemsSupplementBackButton = true
             }
@@ -114,7 +123,7 @@ class MasterViewController: UITableViewController, NSFetchedResultsControllerDel
     }
 
     func configureCell(_ cell: ProjectTableViewCell, withProject project: Project) {
-        cell.commonInit(project.name!, priority: project.priority!, dueDate: project.due_date!)
+        cell.commonInit(project.name!, priority: project.priority!, dueDate: project.dueDate!)
     }
 
     // MARK: - Fetched results controller

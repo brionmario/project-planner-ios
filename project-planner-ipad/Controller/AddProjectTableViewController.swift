@@ -72,9 +72,9 @@ class AddProjectTableViewController: UITableViewController, UIPopoverPresentatio
             
             project.setValue(projectNameTextField.text, forKeyPath: "name")
             project.setValue(notesTextView.text, forKeyPath: "notes")
-            project.setValue(endDate, forKeyPath: "due_date")
+            project.setValue(endDate, forKeyPath: "dueDate")
             project.setValue(priority, forKeyPath: "priority")
-            project.setValue(addToCalendarFlag, forKeyPath: "add_to_calendar")
+            project.setValue(addToCalendarFlag, forKeyPath: "addToCalendar")
             
             do {
                 try managedContext.save()
