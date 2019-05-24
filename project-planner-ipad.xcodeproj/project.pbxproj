@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		BF3D96CA2297B65000076BD6 /* AddProjectViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3D96C92297B65000076BD6 /* AddProjectViewController.swift */; };
+		BF3D96CC2297B83000076BD6 /* AddProjectTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3D96CB2297B83000076BD6 /* AddProjectTableViewController.swift */; };
+		BF3D96CE2297DD3400076BD6 /* PrioritySelectionTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3D96CD2297DD3400076BD6 /* PrioritySelectionTableViewController.swift */; };
 		BFD689B32296C070003A5E85 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFD689B22296C070003A5E85 /* AppDelegate.swift */; };
 		BFD689B82296C070003A5E85 /* MasterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFD689B72296C070003A5E85 /* MasterViewController.swift */; };
 		BFD689BA2296C070003A5E85 /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFD689B92296C070003A5E85 /* DetailViewController.swift */; };
@@ -17,6 +20,9 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		BF3D96C92297B65000076BD6 /* AddProjectViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddProjectViewController.swift; sourceTree = "<group>"; };
+		BF3D96CB2297B83000076BD6 /* AddProjectTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddProjectTableViewController.swift; sourceTree = "<group>"; };
+		BF3D96CD2297DD3400076BD6 /* PrioritySelectionTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrioritySelectionTableViewController.swift; sourceTree = "<group>"; };
 		BFD689AF2296C070003A5E85 /* project-planner-ipad.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "project-planner-ipad.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		BFD689B22296C070003A5E85 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		BFD689B72296C070003A5E85 /* MasterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MasterViewController.swift; sourceTree = "<group>"; };
@@ -74,6 +80,9 @@
 			children = (
 				BFD689B72296C070003A5E85 /* MasterViewController.swift */,
 				BFD689B92296C070003A5E85 /* DetailViewController.swift */,
+				BF3D96C92297B65000076BD6 /* AddProjectViewController.swift */,
+				BF3D96CB2297B83000076BD6 /* AddProjectTableViewController.swift */,
+				BF3D96CD2297DD3400076BD6 /* PrioritySelectionTableViewController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -166,8 +175,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				BFD689B32296C070003A5E85 /* AppDelegate.swift in Sources */,
+				BF3D96CC2297B83000076BD6 /* AddProjectTableViewController.swift in Sources */,
 				BFD689B82296C070003A5E85 /* MasterViewController.swift in Sources */,
+				BF3D96CE2297DD3400076BD6 /* PrioritySelectionTableViewController.swift in Sources */,
 				BFD689CB2296C175003A5E85 /* ProjectPlanner.xcdatamodeld in Sources */,
+				BF3D96CA2297B65000076BD6 /* AddProjectViewController.swift in Sources */,
 				BFD689BA2296C070003A5E85 /* DetailViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
