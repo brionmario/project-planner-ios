@@ -83,7 +83,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <prototypes>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="Cell" textLabel="Arm-wq-HPj" style="IBUITableViewCellStyleDefault" id="WCw-Qf-5nD">
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="ProjectCell" textLabel="Arm-wq-HPj" style="IBUITableViewCellStyleDefault" id="WCw-Qf-5nD">
                                 <rect key="frame" x="0.0" y="28" width="375" height="52"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="WCw-Qf-5nD" id="37f-cq-3Eg">
@@ -164,6 +164,9 @@
                                                     <nil key="textColor"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <textInputTraits key="textInputTraits"/>
+                                                    <connections>
+                                                        <action selector="handleProjectNameChange:" destination="bkf-6d-g8Q" eventType="editingChanged" id="f91-fw-LxC"/>
+                                                    </connections>
                                                 </textField>
                                             </subviews>
                                             <constraints>
@@ -266,7 +269,7 @@
                                             </subviews>
                                         </tableViewCellContentView>
                                         <connections>
-                                            <outlet property="accessoryView" destination="v5X-1c-sEX" id="aKV-7J-y3Z"/>
+                                            <outlet property="accessoryView" destination="sqr-tD-5sF" id="rAS-SF-HYj"/>
                                         </connections>
                                     </tableViewCell>
                                 </cells>
@@ -311,16 +314,17 @@
                     <navigationItem key="navigationItem" title="Add Project" id="DUg-Id-XaL">
                         <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="hYm-kR-ZGt">
                             <connections>
-                                <action selector="handleCancelClick:" destination="bkf-6d-g8Q" id="al6-0w-ALQ"/>
+                                <action selector="handleCancelButtonClick:" destination="bkf-6d-g8Q" id="al6-0w-ALQ"/>
                             </connections>
                         </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" title="Add" id="BnN-Na-DCh">
                             <connections>
-                                <action selector="handleSaveClick:" destination="bkf-6d-g8Q" id="qey-88-e1j"/>
+                                <action selector="handleAddButtonClick:" destination="bkf-6d-g8Q" id="qey-88-e1j"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
                     <connections>
+                        <outlet property="addProjectButton" destination="BnN-Na-DCh" id="l9T-8p-pYS"/>
                         <outlet property="endDateLabel" destination="pF4-C7-WuQ" id="UxA-nX-EmE"/>
                         <outlet property="notesTextView" destination="TtM-nb-ToK" id="sRN-DF-8OV"/>
                         <outlet property="priorityLabel" destination="GBE-5A-oKd" id="z1x-jE-3v1"/>
@@ -328,9 +332,12 @@
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="lnz-hQ-rRE" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" id="v5X-1c-sEX">
+                <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" id="sqr-tD-5sF">
                     <rect key="frame" x="0.0" y="0.0" width="51" height="31"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <connections>
+                        <action selector="handleAddToCalendarToggle:" destination="bkf-6d-g8Q" eventType="valueChanged" id="JNa-P0-A4i"/>
+                    </connections>
                 </switch>
             </objects>
             <point key="canvasLocation" x="2065.7393850658855" y="-630.46875"/>
@@ -397,7 +404,7 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="Tll-UG-LXB"/>
+        <segue reference="6S0-TO-JiA"/>
     </inferredMetricsTieBreakers>
     <color key="tintColor" red="0.9882352941176471" green="0.31764705882352939" blue="0.52156862745098043" alpha="1" colorSpace="calibratedRGB"/>
 </document>

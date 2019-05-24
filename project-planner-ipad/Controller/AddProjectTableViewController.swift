@@ -8,9 +8,13 @@
 
 import Foundation
 import UIKit
+import CoreData
 
 class AddProjectTableViewController: UITableViewController, UIPopoverPresentationControllerDelegate, UITextViewDelegate {
     
+    var projects: [NSManagedObject] = []
+    var endDate : Date!
+    var addToCalendarFlag: Bool = false
     let dateFormatter : DateFormatter = DateFormatter()
     var datePickerVisible = false
     
@@ -18,6 +22,7 @@ class AddProjectTableViewController: UITableViewController, UIPopoverPresentatio
     @IBOutlet weak var projectNameTextField: UITextField!
     @IBOutlet weak var notesTextView: UITextView!
     @IBOutlet weak var priorityLabel: UILabel!
+    @IBOutlet weak var addProjectButton: UIBarButtonItem!
     
     var priority: String = "Low" {
         didSet {
@@ -29,30 +34,72 @@ class AddProjectTableViewController: UITableViewController, UIPopoverPresentatio
         super.viewDidLoad()
         
         // Set initial end date to one hour ahead of current time
-        dateFormatter.dateFormat = "dd MMM yyyy HH:mm"
         var date = Date()
         date.addTimeInterval(TimeInterval(60.00 * 60.00))
+        endDate = date // Set the raw end date field variable
+        dateFormatter.dateFormat = "dd MMM yyyy HH:mm"
         endDateLabel.text = dateFormatter.string(from: date)
         
         // Settings the placeholder for notes UITextView
-        notesTextView
-            .delegate = self
+        notesTextView.delegate = self
         notesTextView.text = "Notes"
         notesTextView.textColor = UIColor.lightGray
+        
+        // Disable add button
+        toggleAddButtonEnability()
     }
     
     @IBAction func handleDateChange(_ sender: UIDatePicker) {
+        endDate = sender.date // Set the raw end date field variable
         dateFormatter.dateFormat = "dd MMM yyyy HH:mm"
         endDateLabel.text = dateFormatter.string(from: sender.date)
     }
     
-    @IBAction func handleCancelClick(_ sender: Any) {
-        dismiss(animated: true, completion: nil)
-        popoverPresentationController?.delegate?.popoverPresentationControllerDidDismissPopover?(popoverPresentationController!)
+    @IBAction func handleCancelButtonClick(_ sender: UIBarButtonItem) {
+        dismissAddProjectPopOver()
     }
     
-    @IBAction func handleSaveClick(_ sender: Any) {
+    @IBAction func handleAddButtonClick(_ sender: UIBarButtonItem) {
+        if validate() {
+            guard let appDelegate =
+                UIApplication.shared.delegate as? AppDelegate else {
+                    return
+            }
+            
+            let managedContext = appDelegate.persistentContainer.viewContext
+            let entity = NSEntityDescription.entity(forEntityName: "Project", in: managedContext)!
+            let project = NSManagedObject(entity: entity, insertInto: managedContext)
+            
+            project.setValue(projectNameTextField.text, forKeyPath: "name")
+            project.setValue(notesTextView.text, forKeyPath: "notes")
+            project.setValue(endDate, forKeyPath: "due_date")
+            project.setValue(priority, forKeyPath: "priority")
+            project.setValue(addToCalendarFlag, forKeyPath: "add_to_calendar")
+            
+            do {
+                try managedContext.save()
+                projects.append(project)
+            } catch _ as NSError {
+                let alert = UIAlertController(title: "Error", message: "An error occured while saving the project.", preferredStyle: UIAlertController.Style.alert)
+                alert.addAction(UIAlertAction(title: "OK", style: UIAlertAction.Style.default, handler: nil))
+                self.present(alert, animated: true, completion: nil)
+            }
+        } else {
+            let alert = UIAlertController(title: "Error", message: "Please fill the required fields.", preferredStyle: UIAlertController.Style.alert)
+            alert.addAction(UIAlertAction(title: "OK", style: UIAlertAction.Style.default, handler: nil))
+            self.present(alert, animated: true, completion: nil)
+        }
         
+        // Dismiss PopOver
+        dismissAddProjectPopOver()
+    }
+    
+    @IBAction func handleAddToCalendarToggle(_ sender: UISwitch) {
+        addToCalendarFlag = sender.isOn
+    }
+    
+    @IBAction func handleProjectNameChange(_ sender: Any) {
+        toggleAddButtonEnability()
     }
     
     func textViewDidBeginEditing(_ textView: UITextView) {
@@ -60,6 +107,11 @@ class AddProjectTableViewController: UITableViewController, UIPopoverPresentatio
             textView.text = nil
             textView.textColor = UIColor.black
         }
+        toggleAddButtonEnability()
+    }
+    
+    func textViewDidChange(_ textView: UITextView) {
+        toggleAddButtonEnability()
     }
     
     func textViewDidEndEditing(_ textView: UITextView) {
@@ -67,6 +119,30 @@ class AddProjectTableViewController: UITableViewController, UIPopoverPresentatio
             textView.text = "Notes"
             textView.textColor = UIColor.lightGray
         }
+        toggleAddButtonEnability()
+    }
+    
+    // Handles the add button enable state
+    func toggleAddButtonEnability() {
+        if validate() {
+            addProjectButton.isEnabled = true;
+        } else {
+            addProjectButton.isEnabled = false;
+        }
+    }
+    
+    // Dismiss Popover
+    func dismissAddProjectPopOver() {
+        dismiss(animated: true, completion: nil)
+        popoverPresentationController?.delegate?.popoverPresentationControllerDidDismissPopover?(popoverPresentationController!)
+    }
+    
+    // Check if the required fields are empty or not
+    func validate() -> Bool {
+        if !(projectNameTextField.text?.isEmpty)! && !(notesTextView.text == "Notes") && !(notesTextView.text?.isEmpty)! {
+            return true
+        }
+        return false
     }
     
     // Setting the selected priority back on the selection view
