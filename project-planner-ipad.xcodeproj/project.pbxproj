@@ -11,6 +11,7 @@
 		BF3D96CE2297DD3400076BD6 /* PrioritySelectionTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3D96CD2297DD3400076BD6 /* PrioritySelectionTableViewController.swift */; };
 		BF3D96D3229859F500076BD6 /* ProjectTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3D96D1229859F500076BD6 /* ProjectTableViewCell.swift */; };
 		BF3D96D4229859F500076BD6 /* ProjectTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BF3D96D2229859F500076BD6 /* ProjectTableViewCell.xib */; };
+		BF3D96F922988CB200076BD6 /* AddTaskViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3D96F822988CB200076BD6 /* AddTaskViewController.swift */; };
 		BFD689B32296C070003A5E85 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFD689B22296C070003A5E85 /* AppDelegate.swift */; };
 		BFD689B82296C070003A5E85 /* MasterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFD689B72296C070003A5E85 /* MasterViewController.swift */; };
 		BFD689BA2296C070003A5E85 /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFD689B92296C070003A5E85 /* DetailViewController.swift */; };
@@ -25,6 +26,7 @@
 		BF3D96CD2297DD3400076BD6 /* PrioritySelectionTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrioritySelectionTableViewController.swift; sourceTree = "<group>"; };
 		BF3D96D1229859F500076BD6 /* ProjectTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectTableViewCell.swift; sourceTree = "<group>"; };
 		BF3D96D2229859F500076BD6 /* ProjectTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ProjectTableViewCell.xib; sourceTree = "<group>"; };
+		BF3D96F822988CB200076BD6 /* AddTaskViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddTaskViewController.swift; sourceTree = "<group>"; };
 		BFD689AF2296C070003A5E85 /* project-planner-ipad.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "project-planner-ipad.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		BFD689B22296C070003A5E85 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		BFD689B72296C070003A5E85 /* MasterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MasterViewController.swift; sourceTree = "<group>"; };
@@ -84,6 +86,7 @@
 				BFD689B92296C070003A5E85 /* DetailViewController.swift */,
 				BF3D96CB2297B83000076BD6 /* AddProjectTableViewController.swift */,
 				BF3D96CD2297DD3400076BD6 /* PrioritySelectionTableViewController.swift */,
+				BF3D96F822988CB200076BD6 /* AddTaskViewController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -179,6 +182,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				BFD689B32296C070003A5E85 /* AppDelegate.swift in Sources */,
+				BF3D96F922988CB200076BD6 /* AddTaskViewController.swift in Sources */,
 				BF3D96D3229859F500076BD6 /* ProjectTableViewCell.swift in Sources */,
 				BF3D96CC2297B83000076BD6 /* AddProjectTableViewController.swift in Sources */,
 				BFD689B82296C070003A5E85 /* MasterViewController.swift in Sources */,
