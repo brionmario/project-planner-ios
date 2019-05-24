@@ -13,8 +13,7 @@ class MasterViewController: UITableViewController, NSFetchedResultsControllerDel
 
     var detailViewController: DetailViewController? = nil
     var managedObjectContext: NSManagedObjectContext? = nil
-
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
@@ -24,6 +23,10 @@ class MasterViewController: UITableViewController, NSFetchedResultsControllerDel
             let controllers = split.viewControllers
             detailViewController = (controllers[controllers.count-1] as! UINavigationController).topViewController as? DetailViewController
         }
+        
+        // initializing the custom cell
+        let nibName = UINib(nibName: "ProjectTableViewCell", bundle: nil)
+        tableView.register(nibName, forCellReuseIdentifier: "ProjectCell")
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -83,7 +86,7 @@ class MasterViewController: UITableViewController, NSFetchedResultsControllerDel
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "ProjectCell", for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: "ProjectCell", for: indexPath) as! ProjectTableViewCell
         let project = fetchedResultsController.object(at: indexPath)
         configureCell(cell, withProject: project)
         return cell
@@ -110,8 +113,8 @@ class MasterViewController: UITableViewController, NSFetchedResultsControllerDel
         }
     }
 
-    func configureCell(_ cell: UITableViewCell, withProject project: Project) {
-        cell.textLabel!.text = project.name
+    func configureCell(_ cell: ProjectTableViewCell, withProject project: Project) {
+        cell.commonInit(project.name!, priority: project.priority!, dueDate: project.due_date!)
     }
 
     // MARK: - Fetched results controller
@@ -172,9 +175,9 @@ class MasterViewController: UITableViewController, NSFetchedResultsControllerDel
             case .delete:
                 tableView.deleteRows(at: [indexPath!], with: .fade)
             case .update:
-                configureCell(tableView.cellForRow(at: indexPath!)!, withProject: anObject as! Project)
+                configureCell(tableView.cellForRow(at: indexPath!)! as! ProjectTableViewCell, withProject: anObject as! Project)
             case .move:
-                configureCell(tableView.cellForRow(at: indexPath!)!, withProject: anObject as! Project)
+                configureCell(tableView.cellForRow(at: indexPath!)! as! ProjectTableViewCell, withProject: anObject as! Project)
                 tableView.moveRow(at: indexPath!, to: newIndexPath!)
         }
     }
