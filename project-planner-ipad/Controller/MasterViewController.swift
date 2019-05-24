@@ -66,7 +66,7 @@ class MasterViewController: UITableViewController, NSFetchedResultsControllerDel
         if segue.identifier == "addProject" {
             if let controller = segue.destination as? UIViewController {
                 controller.popoverPresentationController!.delegate = self
-                controller.preferredContentSize = CGSize(width: 320, height: 500)
+                controller.preferredContentSize = CGSize(width: 320, height: 450)
             }
         }
     }
@@ -195,11 +195,6 @@ class MasterViewController: UITableViewController, NSFetchedResultsControllerDel
     // Add Project Pop Over
     func popoverPresentationControllerDidDismissPopover(_ popoverPresentationController: UIPopoverPresentationController) {
         //do som stuff from the popover
-    }
-    
-    // Disable popover on iphone
-    func adaptivePresentationStyle(for controller: UIPresentationController) -> UIModalPresentationStyle {
-        return UIModalPresentationStyle.none
     }
 }
 
