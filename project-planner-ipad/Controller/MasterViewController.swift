@@ -175,7 +175,8 @@ class MasterViewController: UITableViewController, NSFetchedResultsControllerDel
         }
         
         return _fetchedResultsController!
-    }    
+    }
+    
     var _fetchedResultsController: NSFetchedResultsController<Project>? = nil
 
     func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {

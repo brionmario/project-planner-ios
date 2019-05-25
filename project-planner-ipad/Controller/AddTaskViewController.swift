@@ -19,6 +19,7 @@ class AddTaskViewController: UITableViewController, UIPopoverPresentationControl
     let dateFormatter : DateFormatter = DateFormatter()
     var startDatePickerVisible = false
     var endDatePickerVisible = false
+    var selectedProject: Project?
     
     @IBOutlet weak var endDateLabel: UILabel!
     @IBOutlet weak var startDateLabel: UILabel!
@@ -82,6 +83,8 @@ class AddTaskViewController: UITableViewController, UIPopoverPresentationControl
             task.setValue(startDate, forKeyPath: "startDate")
             task.setValue(endDate, forKeyPath: "dueDate")
             task.setValue(addNotificationFlag, forKeyPath: "addNotification")
+            
+            selectedProject?.addToTasks((task as? Task)!)
             
             do {
                 try managedContext.save()

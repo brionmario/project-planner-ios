@@ -9,6 +9,8 @@
 import UIKit
 
 class DetailViewController: UIViewController, UIPopoverPresentationControllerDelegate {
+    
+    
 
     @IBOutlet weak var projectNameLabel: UILabel!
     @IBOutlet weak var dueDateLabel: UILabel!
@@ -49,11 +51,26 @@ class DetailViewController: UIViewController, UIPopoverPresentationControllerDel
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "addTask" {
-            if let controller = segue.destination as? UIViewController {
-                controller.popoverPresentationController!.delegate = self
-                controller.preferredContentSize = CGSize(width: 320, height: 400)
-            }
+            let controller = (segue.destination as! UINavigationController).topViewController as! AddTaskViewController
+            controller.selectedProject = selectedProject
         }
     }
 }
 
+extension DetailViewController: UITableViewDelegate,UITableViewDataSource {
+    
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return 1
+    }
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return (selectedProject?.tasks!.count)!
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "TaskCell")!
+        let tasks = (selectedProject?.tasks!.allObjects as! [Task])
+        cell.textLabel?.text = tasks[indexPath.row].name
+        return cell
+    }
+}
