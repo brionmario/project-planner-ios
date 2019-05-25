@@ -43,11 +43,13 @@ class AddProjectViewController: UITableViewController, UIPopoverPresentationCont
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        var now = Date();
+        endDatePicker.minimumDate = now
+        
         if !editingMode {
             // Set initial end date to one hour ahead of current time
-            var date = Date()
-            date.addTimeInterval(TimeInterval(60.00 * 60.00))
-            endDate = date // Set the raw end date field variable
+            now.addTimeInterval(TimeInterval(60.00 * 60.00))
+            endDate = now // Set the raw end date field variable
             endDateLabel.text = formatDate(endDate)
             
             // Settings the placeholder for notes UITextView

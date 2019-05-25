@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		BF3A3B602299BC8E007A20BF /* LinearProgressBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3A3B5F2299BC8E007A20BF /* LinearProgressBar.swift */; };
+		BF3A3B632299C58D007A20BF /* Formatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3A3B622299C58D007A20BF /* Formatter.swift */; };
+		BF3A3B652299C684007A20BF /* Calculations.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3A3B642299C684007A20BF /* Calculations.swift */; };
 		BF3D96CC2297B83000076BD6 /* AddProjectViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3D96CB2297B83000076BD6 /* AddProjectViewController.swift */; };
 		BF3D96CE2297DD3400076BD6 /* PrioritySelectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3D96CD2297DD3400076BD6 /* PrioritySelectionViewController.swift */; };
 		BF3D96D3229859F500076BD6 /* ProjectTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3D96D1229859F500076BD6 /* ProjectTableViewCell.swift */; };
@@ -26,9 +29,13 @@
 		BFDC2B142299352A0084C115 /* UITableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFDC2B132299352A0084C115 /* UITableView.swift */; };
 		BFDC2B172299705D0084C115 /* TaskTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFDC2B152299705D0084C115 /* TaskTableViewCell.swift */; };
 		BFDC2B182299705D0084C115 /* TaskTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BFDC2B162299705D0084C115 /* TaskTableViewCell.xib */; };
+		BFDC2B1A229988D90084C115 /* CircularProgressBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFDC2B19229988D90084C115 /* CircularProgressBar.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		BF3A3B5F2299BC8E007A20BF /* LinearProgressBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinearProgressBar.swift; sourceTree = "<group>"; };
+		BF3A3B622299C58D007A20BF /* Formatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Formatter.swift; sourceTree = "<group>"; };
+		BF3A3B642299C684007A20BF /* Calculations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Calculations.swift; sourceTree = "<group>"; };
 		BF3D96CB2297B83000076BD6 /* AddProjectViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddProjectViewController.swift; sourceTree = "<group>"; };
 		BF3D96CD2297DD3400076BD6 /* PrioritySelectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrioritySelectionViewController.swift; sourceTree = "<group>"; };
 		BF3D96D1229859F500076BD6 /* ProjectTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectTableViewCell.swift; sourceTree = "<group>"; };
@@ -50,6 +57,7 @@
 		BFDC2B132299352A0084C115 /* UITableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITableView.swift; sourceTree = "<group>"; };
 		BFDC2B152299705D0084C115 /* TaskTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskTableViewCell.swift; sourceTree = "<group>"; };
 		BFDC2B162299705D0084C115 /* TaskTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TaskTableViewCell.xib; sourceTree = "<group>"; };
+		BFDC2B19229988D90084C115 /* CircularProgressBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CircularProgressBar.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -63,6 +71,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		BF3A3B612299C566007A20BF /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				BF3A3B622299C58D007A20BF /* Formatter.swift */,
+				BF3A3B642299C684007A20BF /* Calculations.swift */,
+			);
+			path = Helpers;
+			sourceTree = "<group>";
+		};
 		BFD689A62296C070003A5E85 = {
 			isa = PBXGroup;
 			children = (
@@ -82,6 +99,7 @@
 		BFD689B12296C070003A5E85 /* project-planner-ipad */ = {
 			isa = PBXGroup;
 			children = (
+				BF3A3B612299C566007A20BF /* Helpers */,
 				BFDC2B10229934EC0084C115 /* Extensions */,
 				BFD689CE2296D384003A5E85 /* View */,
 				BFD689CD2296D378003A5E85 /* Model */,
@@ -126,6 +144,8 @@
 				BF3D96D2229859F500076BD6 /* ProjectTableViewCell.xib */,
 				BFDC2B152299705D0084C115 /* TaskTableViewCell.swift */,
 				BFDC2B162299705D0084C115 /* TaskTableViewCell.xib */,
+				BFDC2B19229988D90084C115 /* CircularProgressBar.swift */,
+				BF3A3B5F2299BC8E007A20BF /* LinearProgressBar.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -218,13 +238,17 @@
 				BF3D96D3229859F500076BD6 /* ProjectTableViewCell.swift in Sources */,
 				BFDC2B0C229930540084C115 /* Project+CoreDataClass.swift in Sources */,
 				BF3D96CC2297B83000076BD6 /* AddProjectViewController.swift in Sources */,
+				BF3A3B602299BC8E007A20BF /* LinearProgressBar.swift in Sources */,
 				BFD689B82296C070003A5E85 /* MasterViewController.swift in Sources */,
 				BF3D96CE2297DD3400076BD6 /* PrioritySelectionViewController.swift in Sources */,
 				BFDC2B0E229930540084C115 /* Task+CoreDataClass.swift in Sources */,
 				BFD689CB2296C175003A5E85 /* ProjectPlanner.xcdatamodeld in Sources */,
 				BFDC2B142299352A0084C115 /* UITableView.swift in Sources */,
+				BF3A3B652299C684007A20BF /* Calculations.swift in Sources */,
 				BFDC2B0F229930540084C115 /* Task+CoreDataProperties.swift in Sources */,
+				BFDC2B1A229988D90084C115 /* CircularProgressBar.swift in Sources */,
 				BFD689BA2296C070003A5E85 /* DetailViewController.swift in Sources */,
+				BF3A3B632299C58D007A20BF /* Formatter.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -8,13 +8,22 @@
 
 import UIKit
 
-class DetailViewController: UIViewController, UIPopoverPresentationControllerDelegate {
+class DetailViewController: UIViewController, UITableViewDelegate,UITableViewDataSource, UIPopoverPresentationControllerDelegate {
     
-    
-
+    @IBOutlet weak var taskTable: UITableView!
     @IBOutlet weak var projectNameLabel: UILabel!
     @IBOutlet weak var dueDateLabel: UILabel!
     @IBOutlet weak var priorityLabel: UILabel!
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        // Do any additional setup after loading the view, typically from a nib.
+        configureView()
+        
+        // initializing the custom cell
+        let nibName = UINib(nibName: "TaskTableViewCell", bundle: nil)
+        taskTable.register(nibName, forCellReuseIdentifier: "TaskCell")
+    }
     
     func configureView() {
         let formatter = DateFormatter()
@@ -34,12 +43,6 @@ class DetailViewController: UIViewController, UIPopoverPresentationControllerDel
         }
     }
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
-        configureView()
-    }
-
     var selectedProject: Project? {
         didSet {
             // Update the view.
@@ -55,22 +58,32 @@ class DetailViewController: UIViewController, UIPopoverPresentationControllerDel
             controller.selectedProject = selectedProject
         }
     }
-}
-
-extension DetailViewController: UITableViewDelegate,UITableViewDataSource {
     
     func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return (selectedProject?.tasks!.count)!
+        return selectedProject?.tasks?.count ?? 0
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "TaskCell")!
+        let cell = tableView.dequeueReusableCell(withIdentifier: "TaskCell", for: indexPath) as! TaskTableViewCell
         let tasks = (selectedProject?.tasks!.allObjects as! [Task])
-        cell.textLabel?.text = tasks[indexPath.row].name
+        configureCell(cell, withTask: tasks[indexPath.row], index: indexPath.row)
         return cell
     }
+    
+    func configureCell(_ cell: TaskTableViewCell, withTask task: Task, index: Int) {
+        print(task)
+        cell.commonInit(task.name, taskProgress: CGFloat(task.progress), startDate: task.startDate as Date, dueDate: task.dueDate as Date, taskNo: index + 1)
+    }
+    
+    // Helper to format date
+    func formatDate(_ date: Date) -> String {
+        let dateFormatter : DateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "dd MMM yyyy HH:mm"
+        return dateFormatter.string(from: date)
+    }
 }
+

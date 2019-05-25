@@ -14,38 +14,54 @@ class AddTaskViewController: UITableViewController, UIPopoverPresentationControl
     
     var tasks: [NSManagedObject] = []
     var startDate : Date!
-    var endDate : Date!
-    var addNotificationFlag: Bool = false
+    var dueDate : Date!
     let dateFormatter : DateFormatter = DateFormatter()
     var startDatePickerVisible = false
-    var endDatePickerVisible = false
+    var dueDatePickerVisible = false
+    var taskProgressPickerVisible = false
     var selectedProject: Project?
     
-    @IBOutlet weak var endDateLabel: UILabel!
+    @IBOutlet weak var dueDateLabel: UILabel!
     @IBOutlet weak var startDateLabel: UILabel!
     @IBOutlet weak var taskNameTextField: UITextField!
     @IBOutlet weak var notesTextView: UITextView!
     @IBOutlet weak var addTaskButton: UIBarButtonItem!
+    @IBOutlet weak var progressLabel: UILabel!
+    @IBOutlet weak var progressSlider: UISlider!
+    @IBOutlet weak var progressSliderLabel: UILabel!
+    @IBOutlet var addNotificationSwitch: UISwitch!
+    @IBOutlet weak var startDatePicker: UIDatePicker!
+    @IBOutlet weak var endDatePicker: UIDatePicker!
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        var date = Date()
+        var now = Date()
+        
+        // Disable past dates on datepickers
+        startDatePicker.minimumDate = now
+        endDatePicker.minimumDate = now
+        
         dateFormatter.dateFormat = "dd MMM yyyy HH:mm"
         
         // Set start date to current
-        startDate = date // Set the raw end date field variable
-        startDateLabel.text = dateFormatter.string(from: date)
+        startDate = now // Set the raw end date field variable
+        startDateLabel.text = dateFormatter.string(from: now)
         
         // Set end date to one hour ahead of current time
-        date.addTimeInterval(TimeInterval(60.00 * 60.00))
-        endDate = date // Set the raw end date field variable
-        endDateLabel.text = dateFormatter.string(from: date)
+        now.addTimeInterval(TimeInterval(60.00 * 60.00))
+        dueDate = now // Set the raw end date field variable
+        dueDateLabel.text = dateFormatter.string(from: now)
         
         // Settings the placeholder for notes UITextView
         notesTextView.delegate = self
         notesTextView.text = "Notes"
         notesTextView.textColor = UIColor.lightGray
+        
+        // Setting the initial task progress
+        progressSlider.value = 0
+        progressLabel.text = "0%"
+        progressSliderLabel.text = "0% Completed"
         
         // Disable add button
         toggleAddButtonEnability()
@@ -58,9 +74,9 @@ class AddTaskViewController: UITableViewController, UIPopoverPresentationControl
     }
     
     @IBAction func handleEndDateChange(_ sender: UIDatePicker) {
-        endDate = sender.date // Set the raw end date field variable
+        dueDate = sender.date // Set the raw end date field variable
         dateFormatter.dateFormat = "dd MMM yyyy HH:mm"
-        endDateLabel.text = dateFormatter.string(from: sender.date)
+        dueDateLabel.text = dateFormatter.string(from: sender.date)
     }
     
     @IBAction func handleCancelButtonClick(_ sender: UIBarButtonItem) {
@@ -81,8 +97,9 @@ class AddTaskViewController: UITableViewController, UIPopoverPresentationControl
             task.setValue(taskNameTextField.text, forKeyPath: "name")
             task.setValue(notesTextView.text, forKeyPath: "notes")
             task.setValue(startDate, forKeyPath: "startDate")
-            task.setValue(endDate, forKeyPath: "dueDate")
-            task.setValue(addNotificationFlag, forKeyPath: "addNotification")
+            task.setValue(dueDate, forKeyPath: "dueDate")
+            task.setValue(Bool(addNotificationSwitch.isOn), forKeyPath: "addNotification")
+            task.setValue(Float(progressSlider.value * 100), forKey: "progress")
             
             selectedProject?.addToTasks((task as? Task)!)
             
@@ -104,12 +121,14 @@ class AddTaskViewController: UITableViewController, UIPopoverPresentationControl
         dismissAddTaskPopOver()
     }
     
-    @IBAction func handleAddNotificationToggle(_ sender: UISwitch) {
-        addNotificationFlag = sender.isOn
-    }
-    
     @IBAction func handleTaskNameChange(_ sender: Any) {
         toggleAddButtonEnability()
+    }
+    
+    @IBAction func handleProgressChange(_ sender: UISlider) {
+        let progress = Int(sender.value * 100)
+        progressLabel.text = "\(progress)%"
+        progressSliderLabel.text = "\(progress)% Completed"
     }
     
     func textViewDidBeginEditing(_ textView: UITextView) {
@@ -174,7 +193,13 @@ extension AddTaskViewController {
             tableView.reloadData()
         }
         if(indexPath.section == 1 && indexPath.row == 2) {
-            endDatePickerVisible = !endDatePickerVisible
+            dueDatePickerVisible = !dueDatePickerVisible
+            tableView.reloadData()
+        }
+        
+        // Section 2 contains task progress
+        if(indexPath.section == 2 && indexPath.row == 0) {
+            taskProgressPickerVisible = !taskProgressPickerVisible
             tableView.reloadData()
         }
         
@@ -190,10 +215,16 @@ extension AddTaskViewController {
             return 200.0
         }
         if indexPath.section == 1 && indexPath.row == 3 {
-            if endDatePickerVisible == false {
+            if dueDatePickerVisible == false {
                 return 0.0
             }
             return 200.0
+        }
+        if indexPath.section == 2 && indexPath.row == 1 {
+            if taskProgressPickerVisible == false {
+                return 0.0
+            }
+            return 100.0
         }
         
         // Make Notes text view bigger: 80

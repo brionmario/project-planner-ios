@@ -13,11 +13,12 @@
         <attribute name="dueDate" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="notes" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="progress" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="startDate" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
         <relationship name="project" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Project" inverseName="tasks" inverseEntity="Project" syncable="YES"/>
     </entity>
     <elements>
         <element name="Project" positionX="-261.09375" positionY="-73.125" width="128" height="135"/>
-        <element name="Task" positionX="153.34375" positionY="-16.34765625" width="128" height="135"/>
+        <element name="Task" positionX="153.34375" positionY="-16.34765625" width="128" height="150"/>
     </elements>
 </model>
