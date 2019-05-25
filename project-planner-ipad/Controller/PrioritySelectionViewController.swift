@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 
-class PrioritySelectionTableViewController: UITableViewController {
+class PrioritySelectionViewController: UITableViewController {
     
     var priorities = [
         "Low",
@@ -41,7 +41,7 @@ class PrioritySelectionTableViewController: UITableViewController {
 }
 
 // MARK: - UITableViewDataSource
-extension PrioritySelectionTableViewController {
+extension PrioritySelectionViewController {
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return priorities.count
@@ -62,7 +62,7 @@ extension PrioritySelectionTableViewController {
 }
 
 // MARK: - UITableViewDelegate
-extension PrioritySelectionTableViewController {
+extension PrioritySelectionViewController {
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)

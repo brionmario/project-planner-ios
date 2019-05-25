@@ -7,8 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		BF3D96CC2297B83000076BD6 /* AddProjectTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3D96CB2297B83000076BD6 /* AddProjectTableViewController.swift */; };
-		BF3D96CE2297DD3400076BD6 /* PrioritySelectionTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3D96CD2297DD3400076BD6 /* PrioritySelectionTableViewController.swift */; };
+		BF3D96CC2297B83000076BD6 /* AddProjectViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3D96CB2297B83000076BD6 /* AddProjectViewController.swift */; };
+		BF3D96CE2297DD3400076BD6 /* PrioritySelectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3D96CD2297DD3400076BD6 /* PrioritySelectionViewController.swift */; };
 		BF3D96D3229859F500076BD6 /* ProjectTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3D96D1229859F500076BD6 /* ProjectTableViewCell.swift */; };
 		BF3D96D4229859F500076BD6 /* ProjectTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BF3D96D2229859F500076BD6 /* ProjectTableViewCell.xib */; };
 		BF3D96F922988CB200076BD6 /* AddTaskViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3D96F822988CB200076BD6 /* AddTaskViewController.swift */; };
@@ -19,11 +19,16 @@
 		BFD689BF2296C071003A5E85 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BFD689BE2296C071003A5E85 /* Assets.xcassets */; };
 		BFD689C22296C071003A5E85 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BFD689C02296C071003A5E85 /* LaunchScreen.storyboard */; };
 		BFD689CB2296C175003A5E85 /* ProjectPlanner.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = BFD689C92296C175003A5E85 /* ProjectPlanner.xcdatamodeld */; };
+		BFDC2B0C229930540084C115 /* Project+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFDC2B08229930540084C115 /* Project+CoreDataClass.swift */; };
+		BFDC2B0D229930540084C115 /* Project+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFDC2B09229930540084C115 /* Project+CoreDataProperties.swift */; };
+		BFDC2B0E229930540084C115 /* Task+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFDC2B0A229930540084C115 /* Task+CoreDataClass.swift */; };
+		BFDC2B0F229930540084C115 /* Task+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFDC2B0B229930540084C115 /* Task+CoreDataProperties.swift */; };
+		BFDC2B142299352A0084C115 /* UITableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFDC2B132299352A0084C115 /* UITableView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		BF3D96CB2297B83000076BD6 /* AddProjectTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddProjectTableViewController.swift; sourceTree = "<group>"; };
-		BF3D96CD2297DD3400076BD6 /* PrioritySelectionTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrioritySelectionTableViewController.swift; sourceTree = "<group>"; };
+		BF3D96CB2297B83000076BD6 /* AddProjectViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddProjectViewController.swift; sourceTree = "<group>"; };
+		BF3D96CD2297DD3400076BD6 /* PrioritySelectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrioritySelectionViewController.swift; sourceTree = "<group>"; };
 		BF3D96D1229859F500076BD6 /* ProjectTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectTableViewCell.swift; sourceTree = "<group>"; };
 		BF3D96D2229859F500076BD6 /* ProjectTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ProjectTableViewCell.xib; sourceTree = "<group>"; };
 		BF3D96F822988CB200076BD6 /* AddTaskViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddTaskViewController.swift; sourceTree = "<group>"; };
@@ -36,6 +41,11 @@
 		BFD689C12296C071003A5E85 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		BFD689C32296C071003A5E85 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		BFD689CA2296C175003A5E85 /* ProjectPlanner.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = ProjectPlanner.xcdatamodel; sourceTree = "<group>"; };
+		BFDC2B08229930540084C115 /* Project+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Project+CoreDataClass.swift"; sourceTree = "<group>"; };
+		BFDC2B09229930540084C115 /* Project+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Project+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		BFDC2B0A229930540084C115 /* Task+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Task+CoreDataClass.swift"; sourceTree = "<group>"; };
+		BFDC2B0B229930540084C115 /* Task+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Task+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		BFDC2B132299352A0084C115 /* UITableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITableView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -68,6 +78,7 @@
 		BFD689B12296C070003A5E85 /* project-planner-ipad */ = {
 			isa = PBXGroup;
 			children = (
+				BFDC2B10229934EC0084C115 /* Extensions */,
 				BFD689CE2296D384003A5E85 /* View */,
 				BFD689CD2296D378003A5E85 /* Model */,
 				BFD689CC2296D344003A5E85 /* Controller */,
@@ -84,8 +95,8 @@
 			children = (
 				BFD689B72296C070003A5E85 /* MasterViewController.swift */,
 				BFD689B92296C070003A5E85 /* DetailViewController.swift */,
-				BF3D96CB2297B83000076BD6 /* AddProjectTableViewController.swift */,
-				BF3D96CD2297DD3400076BD6 /* PrioritySelectionTableViewController.swift */,
+				BF3D96CB2297B83000076BD6 /* AddProjectViewController.swift */,
+				BF3D96CD2297DD3400076BD6 /* PrioritySelectionViewController.swift */,
 				BF3D96F822988CB200076BD6 /* AddTaskViewController.swift */,
 			);
 			path = Controller;
@@ -94,6 +105,10 @@
 		BFD689CD2296D378003A5E85 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				BFDC2B08229930540084C115 /* Project+CoreDataClass.swift */,
+				BFDC2B09229930540084C115 /* Project+CoreDataProperties.swift */,
+				BFDC2B0A229930540084C115 /* Task+CoreDataClass.swift */,
+				BFDC2B0B229930540084C115 /* Task+CoreDataProperties.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -107,6 +122,14 @@
 				BF3D96D2229859F500076BD6 /* ProjectTableViewCell.xib */,
 			);
 			path = View;
+			sourceTree = "<group>";
+		};
+		BFDC2B10229934EC0084C115 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				BFDC2B132299352A0084C115 /* UITableView.swift */,
+			);
+			path = Extensions;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -183,11 +206,16 @@
 			files = (
 				BFD689B32296C070003A5E85 /* AppDelegate.swift in Sources */,
 				BF3D96F922988CB200076BD6 /* AddTaskViewController.swift in Sources */,
+				BFDC2B0D229930540084C115 /* Project+CoreDataProperties.swift in Sources */,
 				BF3D96D3229859F500076BD6 /* ProjectTableViewCell.swift in Sources */,
-				BF3D96CC2297B83000076BD6 /* AddProjectTableViewController.swift in Sources */,
+				BFDC2B0C229930540084C115 /* Project+CoreDataClass.swift in Sources */,
+				BF3D96CC2297B83000076BD6 /* AddProjectViewController.swift in Sources */,
 				BFD689B82296C070003A5E85 /* MasterViewController.swift in Sources */,
-				BF3D96CE2297DD3400076BD6 /* PrioritySelectionTableViewController.swift in Sources */,
+				BF3D96CE2297DD3400076BD6 /* PrioritySelectionViewController.swift in Sources */,
+				BFDC2B0E229930540084C115 /* Task+CoreDataClass.swift in Sources */,
 				BFD689CB2296C175003A5E85 /* ProjectPlanner.xcdatamodeld in Sources */,
+				BFDC2B142299352A0084C115 /* UITableView.swift in Sources */,
+				BFDC2B0F229930540084C115 /* Task+CoreDataProperties.swift in Sources */,
 				BFD689BA2296C070003A5E85 /* DetailViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

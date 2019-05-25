@@ -16,8 +16,6 @@ class MasterViewController: UITableViewController, NSFetchedResultsControllerDel
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
-        navigationItem.leftBarButtonItem = editButtonItem
 
         if let split = splitViewController {
             let controllers = split.viewControllers
@@ -32,12 +30,16 @@ class MasterViewController: UITableViewController, NSFetchedResultsControllerDel
     override func viewWillAppear(_ animated: Bool) {
         clearsSelectionOnViewWillAppear = splitViewController!.isCollapsed
         super.viewWillAppear(animated)
-        let indexPath = IndexPath(row: 0, section: 0)
-        tableView.selectRow(at: indexPath, animated: true, scrollPosition: .bottom)
         
-        if let indexPath = tableView.indexPathForSelectedRow {
-            let object = fetchedResultsController.object(at: indexPath)
-            self.performSegue(withIdentifier: "showProjectDetails", sender: object)
+        // Set the default selected row
+        let indexPath = IndexPath(row: 0, section: 0)
+        if tableView.hasRowAtIndexPath(indexPath: indexPath as NSIndexPath) {
+            tableView.selectRow(at: indexPath, animated: true, scrollPosition: .bottom)
+            
+            if let indexPath = tableView.indexPathForSelectedRow {
+                let object = fetchedResultsController.object(at: indexPath)
+                self.performSegue(withIdentifier: "showProjectDetails", sender: object)
+            }
         }
     }
 
@@ -76,9 +78,7 @@ class MasterViewController: UITableViewController, NSFetchedResultsControllerDel
             if let indexPath = tableView.indexPathForSelectedRow {
                 let object = fetchedResultsController.object(at: indexPath)
                 let controller = (segue.destination as! UINavigationController).topViewController as! DetailViewController
-                controller.selectedProject = object as? Project
-                controller.navigationItem.leftBarButtonItem = splitViewController?.displayModeButtonItem
-                controller.navigationItem.leftItemsSupplementBackButton = true
+                controller.selectedProject = object as Project
             }
         }
         
@@ -86,6 +86,14 @@ class MasterViewController: UITableViewController, NSFetchedResultsControllerDel
             if let controller = segue.destination as? UIViewController {
                 controller.popoverPresentationController!.delegate = self
                 controller.preferredContentSize = CGSize(width: 320, height: 450)
+            }
+        }
+        
+        if segue.identifier == "editProject" {
+            if let indexPath = tableView.indexPathForSelectedRow {
+                let object = fetchedResultsController.object(at: indexPath)
+                let controller = (segue.destination as! UINavigationController).topViewController as! AddProjectViewController
+                controller.editingProject = object as Project
             }
         }
     }
@@ -130,7 +138,8 @@ class MasterViewController: UITableViewController, NSFetchedResultsControllerDel
     }
 
     func configureCell(_ cell: ProjectTableViewCell, withProject project: Project) {
-        cell.commonInit(project.name!, priority: project.priority!, dueDate: project.dueDate!)
+        print(project)
+        cell.commonInit(project.name, priority: project.priority, dueDate: project.dueDate as Date)
     }
 
     // MARK: - Fetched results controller

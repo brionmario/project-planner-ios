@@ -24,7 +24,7 @@ class DetailViewController: UIViewController, UIPopoverPresentationControllerDel
                 nameLabel.text = project.name ?? "Unavailable"
             }
             if let dueDateLabel = dueDateLabel {
-                dueDateLabel.text = "Due Date: \(formatter.string(from: project.dueDate!))"
+                dueDateLabel.text = "Due Date: \(formatter.string(from: project.dueDate as Date))"
             }
             if let priorityLabel = priorityLabel {
                 priorityLabel.text = "Priority: \(project.priority ?? "Unavailable")"
@@ -42,7 +42,6 @@ class DetailViewController: UIViewController, UIPopoverPresentationControllerDel
         didSet {
             // Update the view.
             configureView()
-            print(selectedProject)
         }
     }
 

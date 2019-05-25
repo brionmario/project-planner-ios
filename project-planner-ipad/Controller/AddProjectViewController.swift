@@ -10,19 +10,21 @@ import Foundation
 import UIKit
 import CoreData
 
-class AddProjectTableViewController: UITableViewController, UIPopoverPresentationControllerDelegate, UITextViewDelegate {
+class AddProjectViewController: UITableViewController, UIPopoverPresentationControllerDelegate, UITextViewDelegate {
     
     var projects: [NSManagedObject] = []
     var endDate : Date!
     var addToCalendarFlag: Bool = false
-    let dateFormatter : DateFormatter = DateFormatter()
     var datePickerVisible = false
+    var editingMode: Bool = false
     
     @IBOutlet weak var endDateLabel: UILabel!
     @IBOutlet weak var projectNameTextField: UITextField!
     @IBOutlet weak var notesTextView: UITextView!
     @IBOutlet weak var priorityLabel: UILabel!
     @IBOutlet weak var addProjectButton: UIBarButtonItem!
+    @IBOutlet var addToCalendarSwitch: UISwitch!
+    @IBOutlet weak var endDatePicker: UIDatePicker!
     
     var priority: String = "Low" {
         didSet {
@@ -30,29 +32,72 @@ class AddProjectTableViewController: UITableViewController, UIPopoverPresentatio
         }
     }
     
+    var editingProject: Project? {
+        didSet {
+            // Update the view.
+            editingMode = true
+            configureView()
+        }
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        // Set initial end date to one hour ahead of current time
-        var date = Date()
-        date.addTimeInterval(TimeInterval(60.00 * 60.00))
-        endDate = date // Set the raw end date field variable
-        dateFormatter.dateFormat = "dd MMM yyyy HH:mm"
-        endDateLabel.text = dateFormatter.string(from: date)
+        if !editingMode {
+            // Set initial end date to one hour ahead of current time
+            var date = Date()
+            date.addTimeInterval(TimeInterval(60.00 * 60.00))
+            endDate = date // Set the raw end date field variable
+            endDateLabel.text = formatDate(endDate)
+            
+            // Settings the placeholder for notes UITextView
+            notesTextView.delegate = self
+            notesTextView.text = "Notes"
+            notesTextView.textColor = UIColor.lightGray
+        }
         
-        // Settings the placeholder for notes UITextView
-        notesTextView.delegate = self
-        notesTextView.text = "Notes"
-        notesTextView.textColor = UIColor.lightGray
-        
+        configureView()
         // Disable add button
         toggleAddButtonEnability()
+        print("loaded")
+    }
+    
+    func configureView() {
+        if editingMode {
+            self.navigationItem.title = "Edit Project"
+            self.navigationItem.rightBarButtonItem?.title = "Edit"
+        }
+        
+        if let project = editingProject {
+            if let projectName = projectNameTextField {
+                projectName.text = editingProject?.name
+            }
+            if let notes = notesTextView {
+                notes.text = editingProject?.notes
+            }
+            if let endDate = endDateLabel {
+                endDate.text = formatDate(editingProject?.dueDate as! Date)
+            }
+            if let endDatePicker = endDatePicker {
+                endDate = editingProject?.dueDate as! Date
+                endDatePicker.date = editingProject?.dueDate as! Date
+            }
+            if let addToCalendar = addToCalendarSwitch {
+                addToCalendar.setOn((editingProject?.addToCalendar)!, animated: true)
+            }
+            if let priority = priorityLabel {
+                priority.text = editingProject?.priority
+            }
+            if let priority = priorityLabel {
+                priority.text = (editingProject?.priority)!
+                self.priority = (editingProject?.priority)!
+            }
+        }
     }
     
     @IBAction func handleDateChange(_ sender: UIDatePicker) {
         endDate = sender.date // Set the raw end date field variable
-        dateFormatter.dateFormat = "dd MMM yyyy HH:mm"
-        endDateLabel.text = dateFormatter.string(from: sender.date)
+        endDateLabel.text = formatDate(sender.date)
     }
     
     @IBAction func handleCancelButtonClick(_ sender: UIBarButtonItem) {
@@ -68,7 +113,14 @@ class AddProjectTableViewController: UITableViewController, UIPopoverPresentatio
             
             let managedContext = appDelegate.persistentContainer.viewContext
             let entity = NSEntityDescription.entity(forEntityName: "Project", in: managedContext)!
-            let project = NSManagedObject(entity: entity, insertInto: managedContext)
+            
+            var project = NSManagedObject()
+            
+            if editingMode {
+                project = (editingProject as? Project)!
+            } else {
+                project = NSManagedObject(entity: entity, insertInto: managedContext)
+            }
             
             project.setValue(projectNameTextField.text, forKeyPath: "name")
             project.setValue(notesTextView.text, forKeyPath: "notes")
@@ -95,7 +147,7 @@ class AddProjectTableViewController: UITableViewController, UIPopoverPresentatio
     }
     
     @IBAction func handleAddToCalendarToggle(_ sender: UISwitch) {
-        addToCalendarFlag = sender.isOn
+        addToCalendarFlag = Bool(sender.isOn)
     }
     
     @IBAction func handleProjectNameChange(_ sender: Any) {
@@ -148,14 +200,21 @@ class AddProjectTableViewController: UITableViewController, UIPopoverPresentatio
     // Setting the selected priority back on the selection view
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "setPriority",
-            let prioritySelectionViewController = segue.destination as? PrioritySelectionTableViewController {
+            let prioritySelectionViewController = segue.destination as? PrioritySelectionViewController {
             prioritySelectionViewController.selectedPriority = priority
         }
+    }
+    
+    // Helper to format date
+    func formatDate(_ date: Date) -> String {
+        let dateFormatter : DateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "dd MMM yyyy HH:mm"
+        return dateFormatter.string(from: date)
     }
 }
 
 // MARK: - UITableViewDelegate
-extension AddProjectTableViewController {
+extension AddProjectViewController {
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if indexPath.section == 0 && indexPath.row == 0 {
@@ -193,10 +252,10 @@ extension AddProjectTableViewController {
 }
 
 // MARK: - IBActions
-extension AddProjectTableViewController {
+extension AddProjectViewController {
     
     @IBAction func unwindWithSelectedGame(segue: UIStoryboardSegue) {
-        if let prioritySelectionViewController = segue.source as? PrioritySelectionTableViewController,
+        if let prioritySelectionViewController = segue.source as? PrioritySelectionViewController,
             let selectedPriority = prioritySelectionViewController.selectedPriority {
             priority = selectedPriority
         }

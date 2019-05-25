@@ -159,6 +159,13 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="Projects" id="Zdf-7t-Un8">
+                        <barButtonItem key="leftBarButtonItem" systemItem="edit" id="buL-xE-Umd">
+                            <connections>
+                                <segue destination="Jx7-15-wlH" kind="popoverPresentation" identifier="editProject" popoverAnchorBarButtonItem="buL-xE-Umd" id="Z30-ye-pWN">
+                                    <popoverArrowDirection key="popoverArrowDirection" up="YES" down="YES" left="YES" right="YES"/>
+                                </segue>
+                            </connections>
+                        </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="Cd5-qF-cvk">
                             <connections>
                                 <segue destination="Jx7-15-wlH" kind="popoverPresentation" identifier="addProject" popoverAnchorBarButtonItem="Cd5-qF-cvk" id="JkR-TC-pIP">
@@ -191,7 +198,7 @@
         <!--Add Project-->
         <scene sceneID="TH9-ea-YqI">
             <objects>
-                <tableViewController id="bkf-6d-g8Q" customClass="AddProjectTableViewController" customModule="project_planner_ipad" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController id="bkf-6d-g8Q" customClass="AddProjectViewController" customModule="project_planner_ipad" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="grouped" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" sectionFooterHeight="18" id="o7w-bK-YOm">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -362,7 +369,9 @@
                     </navigationItem>
                     <connections>
                         <outlet property="addProjectButton" destination="BnN-Na-DCh" id="l9T-8p-pYS"/>
+                        <outlet property="addToCalendarSwitch" destination="sqr-tD-5sF" id="hI1-b8-O3n"/>
                         <outlet property="endDateLabel" destination="pF4-C7-WuQ" id="UxA-nX-EmE"/>
+                        <outlet property="endDatePicker" destination="9uw-SC-Y5l" id="Uff-j4-2Dy"/>
                         <outlet property="notesTextView" destination="TtM-nb-ToK" id="sRN-DF-8OV"/>
                         <outlet property="priorityLabel" destination="GBE-5A-oKd" id="z1x-jE-3v1"/>
                         <outlet property="projectNameTextField" destination="rxa-uR-qAc" id="Pxx-kr-uSz"/>
@@ -379,10 +388,10 @@
             </objects>
             <point key="canvasLocation" x="2065.7393850658855" y="-630.46875"/>
         </scene>
-        <!--Priority Selection Table View Controller-->
+        <!--Priority Selection View Controller-->
         <scene sceneID="7sx-cv-uvS">
             <objects>
-                <tableViewController id="696-KW-B1J" customClass="PrioritySelectionTableViewController" customModule="project_planner_ipad" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController id="696-KW-B1J" customClass="PrioritySelectionViewController" customModule="project_planner_ipad" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" sectionFooterHeight="18" id="MgF-6d-Up6">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -597,7 +606,7 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Add Notification" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="WPt-2e-mpw">
-                                                    <rect key="frame" x="16" y="0.0" width="343" height="43.5"/>
+                                                    <rect key="frame" x="15" y="0.0" width="345" height="43.5"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>
@@ -672,6 +681,7 @@
         <image name="ic_calendar_plus_landscape" width="152.4705810546875" height="152.4705810546875"/>
     </resources>
     <inferredMetricsTieBreakers>
+        <segue reference="JkR-TC-pIP"/>
         <segue reference="N0g-js-CgI"/>
     </inferredMetricsTieBreakers>
     <color key="tintColor" red="0.9882352941176471" green="0.31764705882352939" blue="0.52156862745098043" alpha="1" colorSpace="calibratedRGB"/>
