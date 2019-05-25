@@ -32,7 +32,15 @@ class MasterViewController: UITableViewController, NSFetchedResultsControllerDel
     override func viewWillAppear(_ animated: Bool) {
         clearsSelectionOnViewWillAppear = splitViewController!.isCollapsed
         super.viewWillAppear(animated)
+        let indexPath = IndexPath(row: 0, section: 0)
+        tableView.selectRow(at: indexPath, animated: true, scrollPosition: .bottom)
+        
+        if let indexPath = tableView.indexPathForSelectedRow {
+            let object = fetchedResultsController.object(at: indexPath)
+            self.performSegue(withIdentifier: "showProjectDetails", sender: object)
+        }
     }
+
 
     @objc
     func insertNewObject(_ sender: Any) {
@@ -65,7 +73,6 @@ class MasterViewController: UITableViewController, NSFetchedResultsControllerDel
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "showProjectDetails" {
-            print("showDetail")
             if let indexPath = tableView.indexPathForSelectedRow {
                 let object = fetchedResultsController.object(at: indexPath)
                 let controller = (segue.destination as! UINavigationController).topViewController as! DetailViewController

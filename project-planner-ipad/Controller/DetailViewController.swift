@@ -8,7 +8,7 @@
 
 import UIKit
 
-class DetailViewController: UIViewController {
+class DetailViewController: UIViewController, UIPopoverPresentationControllerDelegate {
 
     @IBOutlet weak var projectNameLabel: UILabel!
     @IBOutlet weak var dueDateLabel: UILabel!
@@ -46,6 +46,15 @@ class DetailViewController: UIViewController {
         }
     }
 
-
+    // MARK: - Segues
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "addTask" {
+            if let controller = segue.destination as? UIViewController {
+                controller.popoverPresentationController!.delegate = self
+                controller.preferredContentSize = CGSize(width: 320, height: 400)
+            }
+        }
+    }
 }
 
