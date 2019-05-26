@@ -21,6 +21,8 @@ class AddTaskViewController: UITableViewController, UIPopoverPresentationControl
     var taskProgressPickerVisible = false
     var selectedProject: Project?
     
+    let formatter: Formatter = Formatter()
+    
     @IBOutlet weak var dueDateLabel: UILabel!
     @IBOutlet weak var startDateLabel: UILabel!
     @IBOutlet weak var taskNameTextField: UITextField!
@@ -42,16 +44,14 @@ class AddTaskViewController: UITableViewController, UIPopoverPresentationControl
         startDatePicker.minimumDate = now
         endDatePicker.minimumDate = now
         
-        dateFormatter.dateFormat = "dd MMM yyyy HH:mm"
-        
         // Set start date to current
         startDate = now // Set the raw end date field variable
-        startDateLabel.text = dateFormatter.string(from: now)
+        startDateLabel.text = formatter.formatDate(now)
         
         // Set end date to one hour ahead of current time
         now.addTimeInterval(TimeInterval(60.00 * 60.00))
         dueDate = now // Set the raw end date field variable
-        dueDateLabel.text = dateFormatter.string(from: now)
+        dueDateLabel.text = formatter.formatDate(now)
         
         // Settings the placeholder for notes UITextView
         notesTextView.delegate = self
@@ -71,12 +71,22 @@ class AddTaskViewController: UITableViewController, UIPopoverPresentationControl
         startDate = sender.date // Set the raw end date field variable
         dateFormatter.dateFormat = "dd MMM yyyy HH:mm"
         startDateLabel.text = dateFormatter.string(from: sender.date)
+        
+        // Set end date minimum to one hour ahead the start date
+        dueDate = sender.date.addingTimeInterval(TimeInterval(60.00 * 60.00))
+        endDatePicker.minimumDate = dueDate
+        dueDateLabel.text = formatter.formatDate(dueDate)
     }
     
     @IBAction func handleEndDateChange(_ sender: UIDatePicker) {
         dueDate = sender.date // Set the raw end date field variable
         dateFormatter.dateFormat = "dd MMM yyyy HH:mm"
         dueDateLabel.text = dateFormatter.string(from: sender.date)
+        
+        // Set start date maximum to one hour before the end date
+        startDate = sender.date.addingTimeInterval(-TimeInterval(60.00 * 60.00))
+        startDatePicker.maximumDate = startDate
+        startDateLabel.text = formatter.formatDate(startDate)
     }
     
     @IBAction func handleCancelButtonClick(_ sender: UIBarButtonItem) {

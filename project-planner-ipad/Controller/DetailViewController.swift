@@ -14,10 +14,20 @@ class DetailViewController: UIViewController, UITableViewDelegate,UITableViewDat
     @IBOutlet weak var projectNameLabel: UILabel!
     @IBOutlet weak var dueDateLabel: UILabel!
     @IBOutlet weak var priorityLabel: UILabel!
+    @IBOutlet weak var projectProgressBar: CircularProgressBar!
+    @IBOutlet weak var daysRemainingProgressBar: CircularProgressBar!
+    
+    let formatter: Formatter = Formatter()
+    let calculations: Calculations = Calculations()
+    let colours: Colours = Colours()
+    
+    
+    let now = Date()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
+        
+        // Configure the view
         configureView()
         
         // initializing the custom cell
@@ -26,19 +36,42 @@ class DetailViewController: UIViewController, UITableViewDelegate,UITableViewDat
     }
     
     func configureView() {
-        let formatter = DateFormatter()
-        formatter.dateFormat = "dd-MM-yyyy HH:mm"
-        
         // Update the user interface for the detail item.
         if let project = selectedProject {
             if let nameLabel = projectNameLabel {
-                nameLabel.text = project.name ?? "Unavailable"
+                nameLabel.text = project.name
             }
             if let dueDateLabel = dueDateLabel {
-                dueDateLabel.text = "Due Date: \(formatter.string(from: project.dueDate as Date))"
+                dueDateLabel.text = "Due Date: \(formatter.formatDate(project.dueDate as Date))"
             }
             if let priorityLabel = priorityLabel {
-                priorityLabel.text = "Priority: \(project.priority ?? "Unavailable")"
+                priorityLabel.text = "Priority: \(project.priority)"
+            }
+            
+            let tasks = (project.tasks!.allObjects as! [Task])
+            let projectProgress = calculations.getProjectProgress(tasks)
+            let daysLeftProgress = calculations.getRemainingDaysPercentage(project.startDate as Date, end: project.dueDate as Date)
+            var daysRemaining = self.calculations.getDateDifference(self.now, end: project.dueDate as Date)
+            
+            if daysRemaining < 0 {
+                daysRemaining = 0
+            }
+            
+            DispatchQueue.main.async {
+                let colours = self.colours.getProgressGradient(projectProgress)
+                self.projectProgressBar.customSubtitle = "Completed"
+                self.projectProgressBar.startGradientColor = colours[0]
+                self.projectProgressBar.endGradientColor = colours[1]
+                self.projectProgressBar.progress = CGFloat(projectProgress) / 100
+            }
+            
+            DispatchQueue.main.async {
+                let colours = self.colours.getProgressGradient(daysLeftProgress, negative: true)
+                self.daysRemainingProgressBar.customTitle = "\(daysRemaining)"
+                self.daysRemainingProgressBar.customSubtitle = "Days Left"
+                self.daysRemainingProgressBar.startGradientColor = colours[0]
+                self.daysRemainingProgressBar.endGradientColor = colours[1]
+                self.daysRemainingProgressBar.progress =  CGFloat(daysLeftProgress) / 100
             }
         }
     }
@@ -77,13 +110,6 @@ class DetailViewController: UIViewController, UITableViewDelegate,UITableViewDat
     func configureCell(_ cell: TaskTableViewCell, withTask task: Task, index: Int) {
         print(task)
         cell.commonInit(task.name, taskProgress: CGFloat(task.progress), startDate: task.startDate as Date, dueDate: task.dueDate as Date, taskNo: index + 1)
-    }
-    
-    // Helper to format date
-    func formatDate(_ date: Date) -> String {
-        let dateFormatter : DateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "dd MMM yyyy HH:mm"
-        return dateFormatter.string(from: date)
     }
 }
 

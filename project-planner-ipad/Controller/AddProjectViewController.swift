@@ -126,6 +126,7 @@ class AddProjectViewController: UITableViewController, UIPopoverPresentationCont
             
             project.setValue(projectNameTextField.text, forKeyPath: "name")
             project.setValue(notesTextView.text, forKeyPath: "notes")
+            project.setValue(Date(), forKeyPath: "startDate")
             project.setValue(endDate, forKeyPath: "dueDate")
             project.setValue(priority, forKeyPath: "priority")
             project.setValue(addToCalendarFlag, forKeyPath: "addToCalendar")

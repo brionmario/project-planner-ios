@@ -2,7 +2,7 @@
 //  Project+CoreDataProperties.swift
 //  project-planner-ipad
 //
-//  Created by Brion Silva on 25/05/2019.
+//  Created by Brion Silva on 26/05/2019.
 //  Copyright © 2019 Brion Silva. All rights reserved.
 //
 //
@@ -22,6 +22,7 @@ extension Project {
     @NSManaged public var name: String
     @NSManaged public var notes: String
     @NSManaged public var priority: String
+    @NSManaged public var startDate: NSDate
     @NSManaged public var tasks: NSSet?
 
 }

@@ -14,10 +14,13 @@ class CircularProgressBar: UIView {
     @IBInspectable public var startGradientColor: UIColor = UIColor.red
     @IBInspectable public var endGradientColor: UIColor = UIColor.orange
     @IBInspectable public var textColor: UIColor = UIColor.black
+    @IBInspectable public var customTitle: String = ""
+    @IBInspectable public var customSubtitle: String = ""
     
     private var backgroundLayer: CAShapeLayer!
     private var foregroundLayer: CAShapeLayer!
-    private var textLayer: CATextLayer!
+    private var titleTextLayer: CATextLayer!
+    private var subTitleTextLayer: CATextLayer!
     private var gradientLayer: CAGradientLayer!
     
     public var progress: CGFloat = 0 {
@@ -31,6 +34,17 @@ class CircularProgressBar: UIView {
         
         guard layer.sublayers == nil else {
             return
+        }
+        
+        var title = "\(Int(progress * 100))"
+        var subtitle = ""
+        
+        if customTitle != "" {
+            title = customTitle
+        }
+        
+        if customSubtitle != "" {
+            subtitle = customSubtitle
         }
         
         let width = rect.width
@@ -50,11 +64,13 @@ class CircularProgressBar: UIView {
         gradientLayer.frame = rect
         gradientLayer.mask = foregroundLayer
         
-        textLayer = createTextLayer(rect: rect, textColor: textColor.cgColor)
+        titleTextLayer = createTitle(rect: rect, text: title, textColor: textColor.cgColor)
+        subTitleTextLayer = createSubTitle(rect: rect, text: subtitle, textColor: textColor.cgColor)
         
         layer.addSublayer(backgroundLayer)
         layer.addSublayer(gradientLayer)
-        layer.addSublayer(textLayer)
+        layer.addSublayer(titleTextLayer)
+        layer.addSublayer(subTitleTextLayer)
     }
     
     private func createCircularLayer(rect: CGRect, strokeColor: CGColor,
@@ -83,7 +99,7 @@ class CircularProgressBar: UIView {
         return shapeLayer
     }
     
-    private func createTextLayer(rect: CGRect, textColor: CGColor) -> CATextLayer {
+    private func createTitle(rect: CGRect, text: String, textColor: CGColor) -> CATextLayer {
         
         let width = rect.width
         let height = rect.height
@@ -92,7 +108,7 @@ class CircularProgressBar: UIView {
         let offset = min(width, height) * 0.1
         
         let layer = CATextLayer()
-        layer.string = "\(Int(progress * 100))%"
+        layer.string = "\(text)%"
         layer.backgroundColor = UIColor.clear.cgColor
         layer.foregroundColor = textColor
         layer.fontSize = fontSize
@@ -102,9 +118,42 @@ class CircularProgressBar: UIView {
         return layer
     }
     
+    private func createSubTitle(rect: CGRect, text: String, textColor: CGColor) -> CATextLayer {
+        
+        let width = rect.width
+        let height = rect.height
+        
+        let fontSize = min(width, height) / 15
+        let offset = min(width, height) * 0.35
+        
+        let layer = CATextLayer()
+        layer.string = "\(text)%"
+        layer.backgroundColor = UIColor.clear.cgColor
+        layer.foregroundColor = textColor
+        layer.fontSize = fontSize
+        layer.frame = CGRect(x: 0, y: (height - fontSize + offset) / 2, width: width, height: fontSize + offset)
+        layer.alignmentMode = .center
+        
+        return layer
+    }
+    
     private func didProgressUpdated() {
-        textLayer?.string = "\(Int(progress * 100))%"
+        var title = "\(Int(progress * 100))%"
+        var subtitle = ""
+        
+        if customTitle != "" {
+            title = customTitle
+        }
+        
+        if customSubtitle != "" {
+            subtitle = customSubtitle
+        }
+        
+        titleTextLayer?.string = title
+        subTitleTextLayer?.string = subtitle
         foregroundLayer?.strokeEnd = progress
+        
+        gradientLayer.colors = [startGradientColor.cgColor, endGradientColor.cgColor]
     }
     
 }

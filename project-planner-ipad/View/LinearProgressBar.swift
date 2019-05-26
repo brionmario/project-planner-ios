@@ -12,8 +12,8 @@ class LinearProgressBar: UIView {
 
     
     @IBInspectable public var backCircleColor: UIColor = UIColor.lightGray
-    @IBInspectable public var startGradientColor: UIColor = UIColor.blue
-    @IBInspectable public var endGradientColor: UIColor = UIColor.magenta
+    @IBInspectable public var startGradientColor: UIColor = UIColor.red
+    @IBInspectable public var endGradientColor: UIColor = UIColor.orange
     
     private var backgroundLayer: CAShapeLayer!
     private var foregroundLayer: CAShapeLayer!
@@ -75,6 +75,7 @@ class LinearProgressBar: UIView {
     
     private func didProgressUpdated() {
         foregroundLayer?.strokeEnd = progress
+        gradientLayer.colors = [startGradientColor.cgColor, endGradientColor.cgColor]
     }
     
 }
