@@ -45,6 +45,16 @@ class DetailViewController: UIViewController, NSFetchedResultsControllerDelegate
         taskTable.register(nibName, forCellReuseIdentifier: "TaskCell")
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        // Set the default selected row
+        let indexPath = IndexPath(row: 0, section: 0)
+        if taskTable.hasRowAtIndexPath(indexPath: indexPath as NSIndexPath) {
+            taskTable.selectRow(at: indexPath, animated: true, scrollPosition: .bottom)
+        }
+    }
+    
     @objc
     func insertNewObject(_ sender: Any) {
         let context = self.fetchedResultsController.managedObjectContext
@@ -130,6 +140,14 @@ class DetailViewController: UIViewController, NSFetchedResultsControllerDelegate
             if let controller = segue.destination as? UIViewController {
                 controller.popoverPresentationController!.delegate = self
                 controller.preferredContentSize = CGSize(width: 300, height: 250)
+            }
+        }
+        
+        if segue.identifier == "editTask" {
+            if let indexPath = taskTable.indexPathForSelectedRow {
+                let object = fetchedResultsController.object(at: indexPath)
+                let controller = (segue.destination as! UINavigationController).topViewController as! AddTaskViewController
+                controller.editingTask = object as Task
             }
         }
     }
@@ -279,7 +297,7 @@ class DetailViewController: UIViewController, NSFetchedResultsControllerDelegate
 }
 
 extension DetailViewController: TaskTableViewCellDelegate {
-    func customCell(cell: TaskTableViewCell, sender button: UIButton, data data: String) {
+    func viewNotes(cell: TaskTableViewCell, sender button: UIButton, data data: String) {
         self.showPopoverFrom(cell: cell, forButton: button, forNotes: data)
     }
 }

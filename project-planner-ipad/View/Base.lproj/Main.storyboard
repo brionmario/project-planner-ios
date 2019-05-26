@@ -50,6 +50,13 @@
                                                     </segue>
                                                 </connections>
                                             </barButtonItem>
+                                            <barButtonItem systemItem="compose" id="kt1-Pk-son">
+                                                <connections>
+                                                    <segue destination="TRM-XE-oqK" kind="popoverPresentation" identifier="editTask" popoverAnchorBarButtonItem="kt1-Pk-son" id="EVf-va-RJ4">
+                                                        <popoverArrowDirection key="popoverArrowDirection" up="YES" down="YES" left="YES" right="YES"/>
+                                                    </segue>
+                                                </connections>
+                                            </barButtonItem>
                                         </items>
                                     </toolbar>
                                     <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="eg7-eR-zw6">
@@ -773,8 +780,8 @@
                     <connections>
                         <outlet property="addNotificationSwitch" destination="bjK-Xy-Vds" id="pYM-hc-Hnk"/>
                         <outlet property="addTaskButton" destination="6BC-FM-Kvg" id="bbE-Qm-Kzz"/>
-                        <outlet property="dueDateLabel" destination="uQI-h6-JYE" id="qTd-yd-xFl"/>
-                        <outlet property="endDatePicker" destination="v3N-9V-NhC" id="RfF-an-jO1"/>
+                        <outlet property="dueDateLabel" destination="uQI-h6-JYE" id="Unk-PJ-tBE"/>
+                        <outlet property="dueDatePicker" destination="v3N-9V-NhC" id="RfF-an-jO1"/>
                         <outlet property="notesTextView" destination="SRW-M2-4Iw" id="Ih1-KJ-YSM"/>
                         <outlet property="progressLabel" destination="MH8-7g-dFP" id="A9w-Qf-frE"/>
                         <outlet property="progressSlider" destination="h8c-Zc-tu2" id="TqQ-7n-iXJ"/>
@@ -816,6 +823,7 @@
         <image name="ic_calendar_plus_landscape" width="152.4705810546875" height="152.4705810546875"/>
     </resources>
     <inferredMetricsTieBreakers>
+        <segue reference="Gq6-wc-StP"/>
         <segue reference="JkR-TC-pIP"/>
         <segue reference="N0g-js-CgI"/>
     </inferredMetricsTieBreakers>

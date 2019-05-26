@@ -20,6 +20,7 @@ class AddTaskViewController: UITableViewController, UIPopoverPresentationControl
     var dueDatePickerVisible = false
     var taskProgressPickerVisible = false
     var selectedProject: Project?
+    var editingMode: Bool = false
     
     let formatter: Formatter = Formatter()
     
@@ -33,7 +34,15 @@ class AddTaskViewController: UITableViewController, UIPopoverPresentationControl
     @IBOutlet weak var progressSliderLabel: UILabel!
     @IBOutlet var addNotificationSwitch: UISwitch!
     @IBOutlet weak var startDatePicker: UIDatePicker!
-    @IBOutlet weak var endDatePicker: UIDatePicker!
+    @IBOutlet weak var dueDatePicker: UIDatePicker!
+    
+    var editingTask: Task? {
+        didSet {
+            // Update the view.
+            editingMode = true
+            configureView()
+        }
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -42,51 +51,90 @@ class AddTaskViewController: UITableViewController, UIPopoverPresentationControl
         
         // Disable past dates on datepickers
         startDatePicker.minimumDate = now
-        endDatePicker.minimumDate = now
+        dueDatePicker.minimumDate = now
+
+        if !editingMode {
+            // Set start date to current
+            startDate = now // Set the raw end date field variable
+            startDateLabel.text = formatter.formatDate(now)
+            
+            // Set end date to one hour ahead of current time
+            now.addTimeInterval(TimeInterval(60.00 * 60.00))
+            dueDate = now // Set the raw end date field variable
+            dueDateLabel.text = formatter.formatDate(now)
+            
+            // Settings the placeholder for notes UITextView
+            notesTextView.delegate = self
+            notesTextView.text = "Notes"
+            notesTextView.textColor = UIColor.lightGray
+            
+            // Setting the initial task progress
+            progressSlider.value = 0
+            progressLabel.text = "0%"
+            progressSliderLabel.text = "0% Completed"
+        }
         
-        // Set start date to current
-        startDate = now // Set the raw end date field variable
-        startDateLabel.text = formatter.formatDate(now)
-        
-        // Set end date to one hour ahead of current time
-        now.addTimeInterval(TimeInterval(60.00 * 60.00))
-        dueDate = now // Set the raw end date field variable
-        dueDateLabel.text = formatter.formatDate(now)
-        
-        // Settings the placeholder for notes UITextView
-        notesTextView.delegate = self
-        notesTextView.text = "Notes"
-        notesTextView.textColor = UIColor.lightGray
-        
-        // Setting the initial task progress
-        progressSlider.value = 0
-        progressLabel.text = "0%"
-        progressSliderLabel.text = "0% Completed"
-        
+        configureView()
         // Disable add button
         toggleAddButtonEnability()
     }
     
+    func configureView() {
+        if editingMode {
+            self.navigationItem.title = "Edit Task"
+            self.navigationItem.rightBarButtonItem?.title = "Edit"
+        }
+        
+        if let task = editingTask {
+            if let textField = taskNameTextField {
+                textField.text = task.name
+            }
+            if let textView = notesTextView {
+                textView.text = task.notes
+            }
+            if let label = startDateLabel {
+                label.text = formatter.formatDate(task.startDate as Date)
+            }
+            if let datePicker = startDatePicker {
+                startDate = task.startDate as Date
+                datePicker.date = task.startDate as Date
+            }
+            if let label = dueDateLabel {
+                label.text = formatter.formatDate(task.dueDate as Date)
+            }
+            if let datePicker = dueDatePicker {
+                dueDate = task.dueDate as Date
+                datePicker.date = task.dueDate as Date
+            }
+            if let uiSwitch = addNotificationSwitch {
+                uiSwitch.setOn(task.addNotification, animated: true)
+            }
+            if let label = progressSliderLabel {
+                label.text = "\(task.progress)% Completed"
+            }
+            if let label = progressLabel {
+                label.text = "\(task.progress)%"
+            }
+            if let slider = progressSlider {
+                slider.value = task.progress / 100
+            }
+        }
+    }
+    
     @IBAction func handleStartDateChange(_ sender: UIDatePicker) {
-        startDate = sender.date // Set the raw end date field variable
-        dateFormatter.dateFormat = "dd MMM yyyy HH:mm"
-        startDateLabel.text = dateFormatter.string(from: sender.date)
+        startDateLabel.text = formatter.formatDate(sender.date)
         
         // Set end date minimum to one hour ahead the start date
-        dueDate = sender.date.addingTimeInterval(TimeInterval(60.00 * 60.00))
-        endDatePicker.minimumDate = dueDate
+        let dueDate = sender.date.addingTimeInterval(TimeInterval(60.00 * 60.00))
+        dueDatePicker.minimumDate = dueDate
         dueDateLabel.text = formatter.formatDate(dueDate)
     }
     
     @IBAction func handleEndDateChange(_ sender: UIDatePicker) {
-        dueDate = sender.date // Set the raw end date field variable
-        dateFormatter.dateFormat = "dd MMM yyyy HH:mm"
-        dueDateLabel.text = dateFormatter.string(from: sender.date)
+        dueDateLabel.text = formatter.formatDate(sender.date)
         
         // Set start date maximum to one hour before the end date
-        startDate = sender.date.addingTimeInterval(-TimeInterval(60.00 * 60.00))
-        startDatePicker.maximumDate = startDate
-        startDateLabel.text = formatter.formatDate(startDate)
+        startDatePicker.maximumDate = sender.date.addingTimeInterval(-TimeInterval(60.00 * 60.00))
     }
     
     @IBAction func handleCancelButtonClick(_ sender: UIBarButtonItem) {
@@ -102,7 +150,14 @@ class AddTaskViewController: UITableViewController, UIPopoverPresentationControl
             
             let managedContext = appDelegate.persistentContainer.viewContext
             let entity = NSEntityDescription.entity(forEntityName: "Task", in: managedContext)!
-            let task = NSManagedObject(entity: entity, insertInto: managedContext)
+            
+            var task = NSManagedObject()
+            
+            if editingMode {
+                task = (editingTask as? Task)!
+            } else {
+                task = NSManagedObject(entity: entity, insertInto: managedContext)
+            }
             
             task.setValue(taskNameTextField.text, forKeyPath: "name")
             task.setValue(notesTextView.text, forKeyPath: "notes")

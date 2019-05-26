@@ -61,7 +61,6 @@ class AddProjectViewController: UITableViewController, UIPopoverPresentationCont
         configureView()
         // Disable add button
         toggleAddButtonEnability()
-        print("loaded")
     }
     
     func configureView() {

@@ -38,7 +38,7 @@ class TaskTableViewCell: UITableViewCell {
     
     @IBAction func handleViewNotesClick(_ sender: Any) {
         print("click")
-        self.cellDelegate?.customCell(cell: self, sender: sender as! UIButton, data: notes)
+        self.cellDelegate?.viewNotes(cell: self, sender: sender as! UIButton, data: notes)
     }
     
     func commonInit(_ taskName: String, taskProgress: CGFloat, startDate: Date, dueDate: Date, notes: String, taskNo: Int) {
@@ -70,5 +70,5 @@ class TaskTableViewCell: UITableViewCell {
 
 
 protocol TaskTableViewCellDelegate {
-    func customCell(cell: TaskTableViewCell, sender button: UIButton, data data: String)
+    func viewNotes(cell: TaskTableViewCell, sender button: UIButton, data data: String)
 }
