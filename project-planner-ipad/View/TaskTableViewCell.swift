@@ -9,6 +9,9 @@
 import UIKit
 
 class TaskTableViewCell: UITableViewCell {
+    
+    var cellDelegate: TaskTableViewCellDelegate?
+    var notes: String = "Not Available"
 
     @IBOutlet weak var daysLeftLabel: UILabel!
     @IBOutlet weak var taskNoLabel: UILabel!
@@ -33,7 +36,12 @@ class TaskTableViewCell: UITableViewCell {
         // Configure the view for the selected state
     }
     
-    func commonInit(_ taskName: String, taskProgress: CGFloat, startDate: Date, dueDate: Date, taskNo: Int) {
+    @IBAction func handleViewNotesClick(_ sender: Any) {
+        print("click")
+        self.cellDelegate?.customCell(cell: self, sender: sender as! UIButton, data: notes)
+    }
+    
+    func commonInit(_ taskName: String, taskProgress: CGFloat, startDate: Date, dueDate: Date, notes: String, taskNo: Int) {
         let (daysLeft, hoursLeft, minutesLeft) = calculations.getTimeDiff(now, end: dueDate)
         let remainingDaysPercentage = calculations.getRemainingTimePercentage(startDate, end: dueDate)
         
@@ -56,5 +64,11 @@ class TaskTableViewCell: UITableViewCell {
         }
         
         taskNoLabel.text = "Task \(taskNo)"
+        self.notes = notes
     }
+}
+
+
+protocol TaskTableViewCellDelegate {
+    func customCell(cell: TaskTableViewCell, sender button: UIButton, data data: String)
 }

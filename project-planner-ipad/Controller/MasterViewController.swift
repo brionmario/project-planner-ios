@@ -14,6 +14,8 @@ class MasterViewController: UITableViewController, NSFetchedResultsControllerDel
     var detailViewController: DetailViewController? = nil
     var managedObjectContext: NSManagedObjectContext? = nil
     
+    @IBOutlet var projectsTable: UITableView!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -113,6 +115,7 @@ class MasterViewController: UITableViewController, NSFetchedResultsControllerDel
         let cell = tableView.dequeueReusableCell(withIdentifier: "ProjectCell", for: indexPath) as! ProjectTableViewCell
         let project = fetchedResultsController.object(at: indexPath)
         configureCell(cell, withProject: project)
+        cell.cellDelegate = self
         return cell
     }
 
@@ -138,7 +141,7 @@ class MasterViewController: UITableViewController, NSFetchedResultsControllerDel
     }
 
     func configureCell(_ cell: ProjectTableViewCell, withProject project: Project) {
-        cell.commonInit(project.name, priority: project.priority, dueDate: project.dueDate as Date)
+        cell.commonInit(project.name, priority: project.priority, dueDate: project.dueDate as Date, notes: project.notes)
     }
 
     // MARK: - Fetched results controller
@@ -219,6 +222,34 @@ class MasterViewController: UITableViewController, NSFetchedResultsControllerDel
          tableView.reloadData()
      }
      */
+    
+    func showPopoverFrom(cell: ProjectTableViewCell, forButton button: UIButton, forNotes notes: String) {
+        let buttonFrame = button.frame
+        var showRect = cell.convert(buttonFrame, to: projectsTable)
+        showRect = projectsTable.convert(showRect, to: view)
+        showRect.origin.y -= 5
+        
+        let controller = self.storyboard?.instantiateViewController(withIdentifier: "NotesPopoverController") as? NotesPopoverController
+        controller?.modalPresentationStyle = .popover
+        controller?.preferredContentSize = CGSize(width: 300, height: 250)
+        controller?.notes = notes
+        
+        if let popoverPresentationController = controller?.popoverPresentationController {
+            popoverPresentationController.permittedArrowDirections = .up
+            popoverPresentationController.sourceView = self.view
+            popoverPresentationController.sourceRect = showRect
+            
+            if let popoverController = controller {
+                present(popoverController, animated: true, completion: nil)
+            }
+        }
+    }
 
+}
+
+extension MasterViewController: ProjectTableViewCellDelegate {
+    func customCell(cell: ProjectTableViewCell, sender button: UIButton, data data: String) {
+        self.showPopoverFrom(cell: cell, forButton: button, forNotes: data)
+    }
 }
 

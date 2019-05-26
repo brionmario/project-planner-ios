@@ -9,6 +9,9 @@
 import UIKit
 
 class ProjectTableViewCell: UITableViewCell {
+    
+    var cellDelegate: ProjectTableViewCellDelegate?
+    var notes: String = "Not Available"
 
     @IBOutlet weak var projectNameLabel: UILabel!
     @IBOutlet weak var dueDateLabel: UILabel!
@@ -25,7 +28,11 @@ class ProjectTableViewCell: UITableViewCell {
         // Configure the view for the selected state
     }
     
-    func commonInit(_ projectName: String, priority: String, dueDate: Date) {
+    @IBAction func handleViewNotesClick(_ sender: Any) {
+        self.cellDelegate?.customCell(cell: self, sender: sender as! UIButton, data: notes)
+    }
+    
+    func commonInit(_ projectName: String, priority: String, dueDate: Date, notes: String) {
         var iconName = "ic-flag-green"
         if priority == "Low" {
             iconName = "ic-flag-green"
@@ -41,5 +48,10 @@ class ProjectTableViewCell: UITableViewCell {
         priorityIcon.image = UIImage(named: iconName)
         projectNameLabel.text = projectName
         dueDateLabel.text = "Due: \(formatter.string(from: dueDate))"
+        self.notes = notes
     }
+}
+
+protocol ProjectTableViewCellDelegate {
+    func customCell(cell: ProjectTableViewCell, sender button: UIButton, data data: String)
 }

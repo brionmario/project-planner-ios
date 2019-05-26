@@ -120,7 +120,16 @@ class DetailViewController: UIViewController, NSFetchedResultsControllerDelegate
             controller.selectedProject = selectedProject
             if let controller = segue.destination as? UIViewController {
                 controller.popoverPresentationController!.delegate = self
-                controller.preferredContentSize = CGSize(width: 320, height: 450)
+                controller.preferredContentSize = CGSize(width: 320, height: 500)
+            }
+        }
+        
+        if segue.identifier == "showProjectNotes" {
+            let controller = segue.destination as! NotesPopoverController
+            controller.notes = selectedProject!.notes
+            if let controller = segue.destination as? UIViewController {
+                controller.popoverPresentationController!.delegate = self
+                controller.preferredContentSize = CGSize(width: 300, height: 250)
             }
         }
     }
@@ -140,6 +149,7 @@ class DetailViewController: UIViewController, NSFetchedResultsControllerDelegate
         let cell = tableView.dequeueReusableCell(withIdentifier: "TaskCell", for: indexPath) as! TaskTableViewCell
         let task = fetchedResultsController.object(at: indexPath)
         configureCell(cell, withTask: task, index: indexPath.row)
+        cell.cellDelegate = self
         return cell
     }
     
@@ -166,7 +176,7 @@ class DetailViewController: UIViewController, NSFetchedResultsControllerDelegate
     
     func configureCell(_ cell: TaskTableViewCell, withTask task: Task, index: Int) {
         //print("Related Project", task.project)
-        cell.commonInit(task.name, taskProgress: CGFloat(task.progress), startDate: task.startDate as Date, dueDate: task.dueDate as Date, taskNo: index + 1)
+        cell.commonInit(task.name, taskProgress: CGFloat(task.progress), startDate: task.startDate as Date, dueDate: task.dueDate as Date, notes: task.notes, taskNo: index + 1)
     }
     
     // MARK: - Fetched results controller
@@ -184,7 +194,6 @@ class DetailViewController: UIViewController, NSFetchedResultsControllerDelegate
         if selectedProject != nil {
             // Setting a predicate
             let predicate = NSPredicate(format: "%K == %@", "project", selectedProject as! Project)
-            print("Selected Project", selectedProject?.name)
             fetchRequest.predicate = predicate
         }
 
@@ -246,9 +255,31 @@ class DetailViewController: UIViewController, NSFetchedResultsControllerDelegate
         taskTable.endUpdates()
     }
     
-    func controllerDidChangeContent(controller: NSFetchedResultsController<NSFetchRequestResult>) {
-        // In the simplest, most efficient, case, reload the table view.
-        taskTable.reloadData()
+    func showPopoverFrom(cell: TaskTableViewCell, forButton button: UIButton, forNotes notes: String) {
+        let buttonFrame = button.frame
+        var showRect = cell.convert(buttonFrame, to: taskTable)
+        showRect = taskTable.convert(showRect, to: view)
+        showRect.origin.y -= 5
+        
+        let controller = self.storyboard?.instantiateViewController(withIdentifier: "NotesPopoverController") as? NotesPopoverController
+        controller?.modalPresentationStyle = .popover
+        controller?.preferredContentSize = CGSize(width: 300, height: 250)
+        controller?.notes = notes
+        
+        if let popoverPresentationController = controller?.popoverPresentationController {
+            popoverPresentationController.permittedArrowDirections = .up
+            popoverPresentationController.sourceView = self.view
+            popoverPresentationController.sourceRect = showRect
+            
+            if let popoverController = controller {
+                present(popoverController, animated: true, completion: nil)
+            }
+        }
     }
 }
 
+extension DetailViewController: TaskTableViewCellDelegate {
+    func customCell(cell: TaskTableViewCell, sender button: UIButton, data data: String) {
+        self.showPopoverFrom(cell: cell, forButton: button, forNotes: data)
+    }
+}

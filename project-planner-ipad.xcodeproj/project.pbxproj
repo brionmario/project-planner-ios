@@ -11,6 +11,7 @@
 		BF3A3B632299C58D007A20BF /* Formatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3A3B622299C58D007A20BF /* Formatter.swift */; };
 		BF3A3B652299C684007A20BF /* Calculations.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3A3B642299C684007A20BF /* Calculations.swift */; };
 		BF3A3B672299EA54007A20BF /* Colours.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3A3B662299EA54007A20BF /* Colours.swift */; };
+		BF3A3B69229AD379007A20BF /* NotesPopoverController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3A3B68229AD379007A20BF /* NotesPopoverController.swift */; };
 		BF3D96CC2297B83000076BD6 /* AddProjectViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3D96CB2297B83000076BD6 /* AddProjectViewController.swift */; };
 		BF3D96CE2297DD3400076BD6 /* PrioritySelectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3D96CD2297DD3400076BD6 /* PrioritySelectionViewController.swift */; };
 		BF3D96D3229859F500076BD6 /* ProjectTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3D96D1229859F500076BD6 /* ProjectTableViewCell.swift */; };
@@ -38,6 +39,7 @@
 		BF3A3B622299C58D007A20BF /* Formatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Formatter.swift; sourceTree = "<group>"; };
 		BF3A3B642299C684007A20BF /* Calculations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Calculations.swift; sourceTree = "<group>"; };
 		BF3A3B662299EA54007A20BF /* Colours.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Colours.swift; sourceTree = "<group>"; };
+		BF3A3B68229AD379007A20BF /* NotesPopoverController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotesPopoverController.swift; sourceTree = "<group>"; };
 		BF3D96CB2297B83000076BD6 /* AddProjectViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddProjectViewController.swift; sourceTree = "<group>"; };
 		BF3D96CD2297DD3400076BD6 /* PrioritySelectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrioritySelectionViewController.swift; sourceTree = "<group>"; };
 		BF3D96D1229859F500076BD6 /* ProjectTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectTableViewCell.swift; sourceTree = "<group>"; };
@@ -123,6 +125,7 @@
 				BF3D96CB2297B83000076BD6 /* AddProjectViewController.swift */,
 				BF3D96CD2297DD3400076BD6 /* PrioritySelectionViewController.swift */,
 				BF3D96F822988CB200076BD6 /* AddTaskViewController.swift */,
+				BF3A3B68229AD379007A20BF /* NotesPopoverController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -241,6 +244,7 @@
 				BF3A3B672299EA54007A20BF /* Colours.swift in Sources */,
 				BF3D96D3229859F500076BD6 /* ProjectTableViewCell.swift in Sources */,
 				BFDC2B0C229930540084C115 /* Project+CoreDataClass.swift in Sources */,
+				BF3A3B69229AD379007A20BF /* NotesPopoverController.swift in Sources */,
 				BF3D96CC2297B83000076BD6 /* AddProjectViewController.swift in Sources */,
 				BF3A3B602299BC8E007A20BF /* LinearProgressBar.swift in Sources */,
 				BFD689B82296C070003A5E85 /* MasterViewController.swift in Sources */,

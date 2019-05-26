@@ -80,6 +80,11 @@
                                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="detailDisclosure" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xb7-58-IJa">
                                                 <rect key="frame" x="276" y="139" width="22" height="22"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                <connections>
+                                                    <segue destination="dlR-Dl-IUv" kind="popoverPresentation" identifier="showProjectNotes" popoverAnchorView="xb7-58-IJa" id="XgR-OX-pBW">
+                                                        <popoverArrowDirection key="popoverArrowDirection" up="YES" down="YES" left="YES" right="YES"/>
+                                                    </segue>
+                                                </connections>
                                             </button>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Priority Level" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ltW-Ab-YcG">
                                                 <rect key="frame" x="20" y="99" width="476" height="29"/>
@@ -144,6 +149,61 @@
             </objects>
             <point key="canvasLocation" x="708.93118594436305" y="128.90625"/>
         </scene>
+        <!--Notes Popover Controller-->
+        <scene sceneID="aTF-uc-u3J">
+            <objects>
+                <viewController storyboardIdentifier="NotesPopoverController" id="dlR-Dl-IUv" customClass="NotesPopoverController" customModule="project_planner_ipad" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="XWf-OV-qU4">
+                        <rect key="frame" x="0.0" y="0.0" width="300" height="250"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <navigationBar contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="3xq-IO-8hd">
+                                <rect key="frame" x="0.0" y="0.0" width="300" height="50"/>
+                                <items>
+                                    <navigationItem title="Notes" id="qXh-71-TrJ"/>
+                                </items>
+                            </navigationBar>
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="WU1-Rd-Np7">
+                                <rect key="frame" x="0.0" y="50" width="300" height="200"/>
+                                <subviews>
+                                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" text="Empty" translatesAutoresizingMaskIntoConstraints="NO" id="QnD-gc-1Ta">
+                                        <rect key="frame" x="16" y="11" width="268" height="178"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                        <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                                    </textView>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstItem="QnD-gc-1Ta" firstAttribute="centerX" secondItem="WU1-Rd-Np7" secondAttribute="centerX" id="9se-KA-qHa"/>
+                                    <constraint firstAttribute="trailing" secondItem="QnD-gc-1Ta" secondAttribute="trailing" constant="16" id="D1q-sR-OVr"/>
+                                    <constraint firstItem="QnD-gc-1Ta" firstAttribute="centerY" secondItem="WU1-Rd-Np7" secondAttribute="centerY" id="M3A-1q-24k"/>
+                                    <constraint firstAttribute="bottom" secondItem="QnD-gc-1Ta" secondAttribute="bottom" constant="11" id="NFe-Hx-cn5"/>
+                                    <constraint firstItem="QnD-gc-1Ta" firstAttribute="leading" secondItem="WU1-Rd-Np7" secondAttribute="leading" constant="16" id="Vp7-Q0-m9g"/>
+                                    <constraint firstItem="QnD-gc-1Ta" firstAttribute="top" secondItem="WU1-Rd-Np7" secondAttribute="top" constant="11" id="hLh-2V-k8s"/>
+                                </constraints>
+                            </scrollView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="3xq-IO-8hd" firstAttribute="leading" secondItem="WU1-Rd-Np7" secondAttribute="leading" id="BOd-iW-Pnl"/>
+                            <constraint firstAttribute="trailing" secondItem="3xq-IO-8hd" secondAttribute="trailing" id="Mqu-FQ-PBw"/>
+                            <constraint firstItem="WU1-Rd-Np7" firstAttribute="top" secondItem="3xq-IO-8hd" secondAttribute="bottom" id="bkf-ID-gxT"/>
+                            <constraint firstItem="3xq-IO-8hd" firstAttribute="trailing" secondItem="WU1-Rd-Np7" secondAttribute="trailing" id="cTm-pg-jLn"/>
+                            <constraint firstAttribute="bottom" secondItem="WU1-Rd-Np7" secondAttribute="bottom" id="eOV-dn-EFB"/>
+                            <constraint firstItem="3xq-IO-8hd" firstAttribute="leading" secondItem="XWf-OV-qU4" secondAttribute="leading" id="i2w-Tr-aF4"/>
+                            <constraint firstItem="3xq-IO-8hd" firstAttribute="top" secondItem="XWf-OV-qU4" secondAttribute="top" id="m99-yd-jdz"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="bru-Fe-HFN"/>
+                    </view>
+                    <size key="freeformSize" width="300" height="250"/>
+                    <connections>
+                        <outlet property="notesTextView" destination="QnD-gc-1Ta" id="5G3-GN-G5j"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Z8c-2N-0P9" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="709" y="605"/>
+        </scene>
         <!--Split View Controller-->
         <scene sceneID="Nki-YV-4Qg">
             <objects>
@@ -201,6 +261,9 @@
                             </connections>
                         </barButtonItem>
                     </navigationItem>
+                    <connections>
+                        <outlet property="projectsTable" destination="r7i-6Z-zg0" id="wyb-be-aJw"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Rux-fX-hf1" sceneMemberID="firstResponder"/>
             </objects>
