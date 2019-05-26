@@ -23,6 +23,6 @@ extension Task {
     @NSManaged public var notes: String
     @NSManaged public var progress: Float
     @NSManaged public var startDate: NSDate
-    @NSManaged public var project: Project?
+    @NSManaged public var project: Project
 
 }

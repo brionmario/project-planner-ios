@@ -7,8 +7,9 @@
 //
 
 import UIKit
+import CoreData
 
-class DetailViewController: UIViewController, UITableViewDelegate,UITableViewDataSource, UIPopoverPresentationControllerDelegate {
+class DetailViewController: UIViewController, NSFetchedResultsControllerDelegate, UITableViewDelegate, UITableViewDataSource, UIPopoverPresentationControllerDelegate {
     
     @IBOutlet weak var taskTable: UITableView!
     @IBOutlet weak var projectNameLabel: UILabel!
@@ -21,6 +22,8 @@ class DetailViewController: UIViewController, UITableViewDelegate,UITableViewDat
     let calculations: Calculations = Calculations()
     let colours: Colours = Colours()
     
+    var detailViewController: DetailViewController? = nil
+    var managedObjectContext: NSManagedObjectContext? = nil
     
     let now = Date()
     
@@ -30,9 +33,35 @@ class DetailViewController: UIViewController, UITableViewDelegate,UITableViewDat
         // Configure the view
         configureView()
         
+        guard let appDelegate =
+            UIApplication.shared.delegate as? AppDelegate else {
+                return
+        }
+        
+        self.managedObjectContext = appDelegate.persistentContainer.viewContext
+        
         // initializing the custom cell
         let nibName = UINib(nibName: "TaskTableViewCell", bundle: nil)
         taskTable.register(nibName, forCellReuseIdentifier: "TaskCell")
+    }
+    
+    @objc
+    func insertNewObject(_ sender: Any) {
+        let context = self.fetchedResultsController.managedObjectContext
+        let newTask = Task(context: context)
+        
+        // If appropriate, configure the new managed object.
+        // newTask.timestamp = Date()
+        
+        // Save the context.
+        do {
+            try context.save()
+        } catch {
+            // Replace this implementation with code to handle the error appropriately.
+            // fatalError() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
+            let nserror = error as NSError
+            fatalError("Unresolved error \(nserror), \(nserror.userInfo)")
+        }
     }
     
     func configureView() {
@@ -89,27 +118,135 @@ class DetailViewController: UIViewController, UITableViewDelegate,UITableViewDat
         if segue.identifier == "addTask" {
             let controller = (segue.destination as! UINavigationController).topViewController as! AddTaskViewController
             controller.selectedProject = selectedProject
+            if let controller = segue.destination as? UIViewController {
+                controller.popoverPresentationController!.delegate = self
+                controller.preferredContentSize = CGSize(width: 320, height: 450)
+            }
         }
     }
     
+    // MARK: - Table View
+    
     func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
+        return fetchedResultsController.sections?.count ?? 0
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return selectedProject?.tasks?.count ?? 0
+        let sectionInfo = fetchedResultsController.sections![section]
+        return sectionInfo.numberOfObjects
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "TaskCell", for: indexPath) as! TaskTableViewCell
-        let tasks = (selectedProject?.tasks!.allObjects as! [Task])
-        configureCell(cell, withTask: tasks[indexPath.row], index: indexPath.row)
+        let task = fetchedResultsController.object(at: indexPath)
+        configureCell(cell, withTask: task, index: indexPath.row)
         return cell
     }
     
+    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        // Return false if you do not want the specified item to be editable.
+        return true
+    }
+    
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == .delete {
+            let context = fetchedResultsController.managedObjectContext
+            context.delete(fetchedResultsController.object(at: indexPath))
+            
+            do {
+                try context.save()
+            } catch {
+                // Replace this implementation with code to handle the error appropriately.
+                // fatalError() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
+                let nserror = error as NSError
+                fatalError("Unresolved error \(nserror), \(nserror.userInfo)")
+            }
+        }
+    }
+    
     func configureCell(_ cell: TaskTableViewCell, withTask task: Task, index: Int) {
-        print(task)
+        print("Related Project", task.project)
         cell.commonInit(task.name, taskProgress: CGFloat(task.progress), startDate: task.startDate as Date, dueDate: task.dueDate as Date, taskNo: index + 1)
+    }
+    
+    // MARK: - Fetched results controller
+    
+    var fetchedResultsController: NSFetchedResultsController<Task> {
+        if _fetchedResultsController != nil {
+            return _fetchedResultsController!
+        }
+        
+        let fetchRequest: NSFetchRequest<Task> = Task.fetchRequest()
+        
+        // Set the batch size to a suitable number.
+        fetchRequest.fetchBatchSize = 20
+        
+        // Setting a predicate
+        let predicate = NSPredicate(format: "%K == %@", "project", selectedProject as! Project)
+        print("Selected Project", selectedProject?.name)
+        fetchRequest.predicate = predicate
+
+        
+        // Edit the sort key as appropriate.
+        let sortDescriptor = NSSortDescriptor(key: "startDate", ascending: false)
+        fetchRequest.sortDescriptors = [sortDescriptor]
+
+        // Edit the section name key path and cache name if appropriate.
+        // nil for section name key path means "no sections".
+        let aFetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: self.managedObjectContext!, sectionNameKeyPath: nil, cacheName: "\(selectedProject)-project")
+        aFetchedResultsController.delegate = self
+        _fetchedResultsController = aFetchedResultsController
+        
+        do {
+            try _fetchedResultsController!.performFetch()
+        } catch {
+            // Replace this implementation with code to handle the error appropriately.
+            // fatalError() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
+            let nserror = error as NSError
+            fatalError("Unresolved error \(nserror), \(nserror.userInfo)")
+        }
+        
+        return _fetchedResultsController!
+    }
+    
+    var _fetchedResultsController: NSFetchedResultsController<Task>? = nil
+    
+    func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+        taskTable.beginUpdates()
+    }
+    
+    func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange sectionInfo: NSFetchedResultsSectionInfo, atSectionIndex sectionIndex: Int, for type: NSFetchedResultsChangeType) {
+        switch type {
+        case .insert:
+            taskTable.insertSections(IndexSet(integer: sectionIndex), with: .fade)
+        case .delete:
+            taskTable.deleteSections(IndexSet(integer: sectionIndex), with: .fade)
+        default:
+            return
+        }
+    }
+    
+    func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
+        switch type {
+        case .insert:
+            taskTable.insertRows(at: [newIndexPath!], with: .fade)
+        case .delete:
+            taskTable.deleteRows(at: [indexPath!], with: .fade)
+        case .update:
+            configureCell(taskTable.cellForRow(at: indexPath!)! as! TaskTableViewCell, withTask: anObject as! Task, index: indexPath!.row)
+        case .move:
+            configureCell(taskTable.cellForRow(at: indexPath!)! as! TaskTableViewCell, withTask: anObject as! Task, index: indexPath!.row)
+            taskTable.moveRow(at: indexPath!, to: newIndexPath!)
+        }
+    }
+    
+    func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+        taskTable.endUpdates()
+    }
+    
+    func controllerDidChangeContent(controller: NSFetchedResultsController<NSFetchRequestResult>) {
+        // In the simplest, most efficient, case, reload the table view.
+        taskTable.reloadData()
     }
 }
 

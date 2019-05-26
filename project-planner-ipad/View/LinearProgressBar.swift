@@ -75,7 +75,7 @@ class LinearProgressBar: UIView {
     
     private func didProgressUpdated() {
         foregroundLayer?.strokeEnd = progress
-        gradientLayer.colors = [startGradientColor.cgColor, endGradientColor.cgColor]
+        gradientLayer?.colors = [startGradientColor.cgColor, endGradientColor.cgColor]
     }
     
 }

@@ -138,7 +138,6 @@ class MasterViewController: UITableViewController, NSFetchedResultsControllerDel
     }
 
     func configureCell(_ cell: ProjectTableViewCell, withProject project: Project) {
-        print(project)
         cell.commonInit(project.name, priority: project.priority, dueDate: project.dueDate as Date)
     }
 
@@ -220,10 +219,6 @@ class MasterViewController: UITableViewController, NSFetchedResultsControllerDel
          tableView.reloadData()
      }
      */
-    
-    // Add Project Pop Over
-    func popoverPresentationControllerDidDismissPopover(_ popoverPresentationController: UIPopoverPresentationController) {
-        //do som stuff from the popover
-    }
+
 }
 
