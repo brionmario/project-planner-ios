@@ -17,6 +17,7 @@ class TaskTableViewCell: UITableViewCell {
     @IBOutlet weak var taskProgressBar: CircularProgressBar!
     @IBOutlet weak var daysRemainingProgressBar: LinearProgressBar!
     
+    let now: Date = Date()
     let colours: Colours = Colours()
     let formatter: Formatter = Formatter()
     let calculations: Calculations = Calculations()
@@ -33,12 +34,12 @@ class TaskTableViewCell: UITableViewCell {
     }
     
     func commonInit(_ taskName: String, taskProgress: CGFloat, startDate: Date, dueDate: Date, taskNo: Int) {
-        let (daysLeft, hoursLeft) = calculations.getDaysAndHoursLeft(end: dueDate)
-        let remainingDaysPercentage = calculations.getRemainingDaysPercentage(startDate, end: dueDate)
+        let (daysLeft, hoursLeft, minutesLeft) = calculations.getTimeDiff(now, end: dueDate)
+        let remainingDaysPercentage = calculations.getRemainingTimePercentage(startDate, end: dueDate)
         
         taskNameLabel.text = taskName
         dueDateLabel.text = "Due: \(formatter.formatDate(dueDate))"
-        daysLeftLabel.text = "\(daysLeft) Days and \(hoursLeft) Hours Remaining"
+        daysLeftLabel.text = "\(daysLeft) Days \(hoursLeft) Hours \(minutesLeft) Minutes Remaining"
         
         DispatchQueue.main.async {
             let colours = self.colours.getProgressGradient(Int(taskProgress))

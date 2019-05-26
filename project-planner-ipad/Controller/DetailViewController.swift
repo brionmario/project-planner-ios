@@ -50,8 +50,8 @@ class DetailViewController: UIViewController, UITableViewDelegate,UITableViewDat
             
             let tasks = (project.tasks!.allObjects as! [Task])
             let projectProgress = calculations.getProjectProgress(tasks)
-            let daysLeftProgress = calculations.getRemainingDaysPercentage(project.startDate as Date, end: project.dueDate as Date)
-            var daysRemaining = self.calculations.getDateDifference(self.now, end: project.dueDate as Date)
+            let daysLeftProgress = calculations.getRemainingTimePercentage(project.startDate as Date, end: project.dueDate as Date)
+            var daysRemaining = self.calculations.getDateDiff(self.now, end: project.dueDate as Date)
             
             if daysRemaining < 0 {
                 daysRemaining = 0
