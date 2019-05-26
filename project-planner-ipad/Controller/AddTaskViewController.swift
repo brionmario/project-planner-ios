@@ -13,8 +13,6 @@ import CoreData
 class AddTaskViewController: UITableViewController, UIPopoverPresentationControllerDelegate, UITextViewDelegate {
     
     var tasks: [NSManagedObject] = []
-    var startDate : Date!
-    var dueDate : Date!
     let dateFormatter : DateFormatter = DateFormatter()
     var startDatePickerVisible = false
     var dueDatePickerVisible = false
@@ -23,6 +21,7 @@ class AddTaskViewController: UITableViewController, UIPopoverPresentationControl
     var editingMode: Bool = false
     
     let formatter: Formatter = Formatter()
+    let now = Date()
     
     @IBOutlet weak var dueDateLabel: UILabel!
     @IBOutlet weak var startDateLabel: UILabel!
@@ -46,8 +45,6 @@ class AddTaskViewController: UITableViewController, UIPopoverPresentationControl
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        var now = Date()
         
         // Disable past dates on datepickers
         startDatePicker.minimumDate = now
@@ -55,13 +52,12 @@ class AddTaskViewController: UITableViewController, UIPopoverPresentationControl
 
         if !editingMode {
             // Set start date to current
-            startDate = now // Set the raw end date field variable
             startDateLabel.text = formatter.formatDate(now)
             
             // Set end date to one hour ahead of current time
-            now.addTimeInterval(TimeInterval(60.00 * 60.00))
-            dueDate = now // Set the raw end date field variable
-            dueDateLabel.text = formatter.formatDate(now)
+            var time = Date()
+            time.addTimeInterval(TimeInterval(60.00 * 60.00))
+            dueDateLabel.text = formatter.formatDate(time)
             
             // Settings the placeholder for notes UITextView
             notesTextView.delegate = self
@@ -96,14 +92,12 @@ class AddTaskViewController: UITableViewController, UIPopoverPresentationControl
                 label.text = formatter.formatDate(task.startDate as Date)
             }
             if let datePicker = startDatePicker {
-                startDate = task.startDate as Date
                 datePicker.date = task.startDate as Date
             }
             if let label = dueDateLabel {
                 label.text = formatter.formatDate(task.dueDate as Date)
             }
             if let datePicker = dueDatePicker {
-                dueDate = task.dueDate as Date
                 datePicker.date = task.dueDate as Date
             }
             if let uiSwitch = addNotificationSwitch {
@@ -161,8 +155,8 @@ class AddTaskViewController: UITableViewController, UIPopoverPresentationControl
             
             task.setValue(taskNameTextField.text, forKeyPath: "name")
             task.setValue(notesTextView.text, forKeyPath: "notes")
-            task.setValue(startDate, forKeyPath: "startDate")
-            task.setValue(dueDate, forKeyPath: "dueDate")
+            task.setValue(startDatePicker.date, forKeyPath: "startDate")
+            task.setValue(dueDatePicker.date, forKeyPath: "dueDate")
             task.setValue(Bool(addNotificationSwitch.isOn), forKeyPath: "addNotification")
             task.setValue(Float(progressSlider.value * 100), forKey: "progress")
             
