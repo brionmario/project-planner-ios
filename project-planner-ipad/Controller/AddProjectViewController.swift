@@ -108,7 +108,9 @@ class AddProjectViewController: UITableViewController, UIPopoverPresentationCont
         if validate() {
             var calendarIdentifier = ""
             var addedToCalendar = false
+            var eventDeleted = false
             let addToCalendarFlag = Bool(addToCalendarSwitch.isOn)
+            let eventStore = EKEventStore()
             
             guard let appDelegate =
                 UIApplication.shared.delegate as? AppDelegate else {
@@ -127,17 +129,29 @@ class AddProjectViewController: UITableViewController, UIPopoverPresentationCont
             }
             
             if addToCalendarFlag {
-                let eventStore = EKEventStore()
-                
-                if (EKEventStore.authorizationStatus(for: .event) != EKAuthorizationStatus.authorized) {
-                    eventStore.requestAccess(to: .event, completion: {
-                        granted, error in
-                        calendarIdentifier = self.createEvent(eventStore, title: self.projectNameTextField.text!, startDate: self.now, endDate: self.endDatePicker.date)
-                    })
+                if editingMode {
+                    if let project = editingProject {
+                        if !project.addToCalendar {
+                            if (EKEventStore.authorizationStatus(for: .event) != EKAuthorizationStatus.authorized) {
+                                eventStore.requestAccess(to: .event, completion: {
+                                    granted, error in
+                                    calendarIdentifier = self.createEvent(eventStore, title: self.projectNameTextField.text!, startDate: self.now, endDate: self.endDatePicker.date)
+                                })
+                            } else {
+                                calendarIdentifier = createEvent(eventStore, title: projectNameTextField.text!, startDate: now, endDate: endDatePicker.date)
+                            }
+                        }
+                    }
                 } else {
-                    calendarIdentifier = createEvent(eventStore, title: projectNameTextField.text!, startDate: now, endDate: endDatePicker.date)
+                    if (EKEventStore.authorizationStatus(for: .event) != EKAuthorizationStatus.authorized) {
+                        eventStore.requestAccess(to: .event, completion: {
+                            granted, error in
+                            calendarIdentifier = self.createEvent(eventStore, title: self.projectNameTextField.text!, startDate: self.now, endDate: self.endDatePicker.date)
+                        })
+                    } else {
+                        calendarIdentifier = createEvent(eventStore, title: projectNameTextField.text!, startDate: now, endDate: endDatePicker.date)
+                    }
                 }
-                
                 if calendarIdentifier != "" {
                     addedToCalendar = true
                 }
@@ -145,18 +159,21 @@ class AddProjectViewController: UITableViewController, UIPopoverPresentationCont
                 if editingMode {
                     if let project = editingProject {
                         if project.addToCalendar {
-                            let eventStore = EKEventStore()
-                            
                             if (EKEventStore.authorizationStatus(for: .event) != EKAuthorizationStatus.authorized) {
                                 eventStore.requestAccess(to: .event, completion: { (granted, error) -> Void in
-                                    addedToCalendar = self.deleteEvent(eventStore, eventIdentifier: project.calendarIdentifier!)
+                                    eventDeleted = self.deleteEvent(eventStore, eventIdentifier: project.calendarIdentifier!)
                                 })
                             } else {
-                                addedToCalendar = deleteEvent(eventStore, eventIdentifier: project.calendarIdentifier!)
+                                eventDeleted = deleteEvent(eventStore, eventIdentifier: project.calendarIdentifier!)
                             }
                         }
                     }
                 }
+            }
+            
+            // Handle event creation state
+            if eventDeleted {
+                addedToCalendar = false
             }
             
             project.setValue(projectNameTextField.text, forKeyPath: "name")
