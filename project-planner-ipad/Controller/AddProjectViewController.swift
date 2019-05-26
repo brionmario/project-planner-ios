@@ -9,11 +9,11 @@
 import Foundation
 import UIKit
 import CoreData
+import EventKit
 
 class AddProjectViewController: UITableViewController, UIPopoverPresentationControllerDelegate, UITextViewDelegate {
     
     var projects: [NSManagedObject] = []
-    var addToCalendarFlag: Bool = false
     var datePickerVisible = false
     var editingMode: Bool = false
     let now = Date();
@@ -78,7 +78,7 @@ class AddProjectViewController: UITableViewController, UIPopoverPresentationCont
                 notes.text = editingProject?.notes
             }
             if let endDate = endDateLabel {
-                endDate.text = formatDate(editingProject?.dueDate as! Date)
+                endDate.text = formatter.formatDate(editingProject?.dueDate as! Date)
             }
             if let endDatePicker = endDatePicker {
                 endDatePicker.date = editingProject?.dueDate as! Date
@@ -97,7 +97,7 @@ class AddProjectViewController: UITableViewController, UIPopoverPresentationCont
     }
     
     @IBAction func handleDateChange(_ sender: UIDatePicker) {
-        endDateLabel.text = formatDate(sender.date)
+        endDateLabel.text = formatter.formatDate(sender.date)
     }
     
     @IBAction func handleCancelButtonClick(_ sender: UIBarButtonItem) {
@@ -106,6 +106,10 @@ class AddProjectViewController: UITableViewController, UIPopoverPresentationCont
     
     @IBAction func handleAddButtonClick(_ sender: UIBarButtonItem) {
         if validate() {
+            var calendarIdentifier = ""
+            var addedToCalendar = false
+            let addToCalendarFlag = Bool(addToCalendarSwitch.isOn)
+            
             guard let appDelegate =
                 UIApplication.shared.delegate as? AppDelegate else {
                     return
@@ -122,13 +126,46 @@ class AddProjectViewController: UITableViewController, UIPopoverPresentationCont
                 project = NSManagedObject(entity: entity, insertInto: managedContext)
             }
             
+            if addToCalendarFlag {
+                let eventStore = EKEventStore()
+                
+                if (EKEventStore.authorizationStatus(for: .event) != EKAuthorizationStatus.authorized) {
+                    eventStore.requestAccess(to: .event, completion: {
+                        granted, error in
+                        calendarIdentifier = self.createEvent(eventStore, title: self.projectNameTextField.text!, startDate: self.now, endDate: self.endDatePicker.date)
+                    })
+                } else {
+                    calendarIdentifier = createEvent(eventStore, title: projectNameTextField.text!, startDate: now, endDate: endDatePicker.date)
+                }
+                
+                if calendarIdentifier != "" {
+                    addedToCalendar = true
+                }
+            } else {
+                if editingMode {
+                    if let project = editingProject {
+                        if project.addToCalendar {
+                            let eventStore = EKEventStore()
+                            
+                            if (EKEventStore.authorizationStatus(for: .event) != EKAuthorizationStatus.authorized) {
+                                eventStore.requestAccess(to: .event, completion: { (granted, error) -> Void in
+                                    addedToCalendar = self.deleteEvent(eventStore, eventIdentifier: project.calendarIdentifier!)
+                                })
+                            } else {
+                                addedToCalendar = deleteEvent(eventStore, eventIdentifier: project.calendarIdentifier!)
+                            }
+                        }
+                    }
+                }
+            }
+            
             project.setValue(projectNameTextField.text, forKeyPath: "name")
             project.setValue(notesTextView.text, forKeyPath: "notes")
-            project.setValue(Date(), forKeyPath: "startDate")
+            project.setValue(now, forKeyPath: "startDate")
             project.setValue(endDatePicker.date, forKeyPath: "dueDate")
             project.setValue(priority, forKeyPath: "priority")
-            project.setValue(addToCalendarFlag, forKeyPath: "addToCalendar")
-            project.setValue(UUID().uuidString, forKey: "uuid")
+            project.setValue(addedToCalendar, forKeyPath: "addToCalendar")
+            project.setValue(calendarIdentifier, forKey: "calendarIdentifier")
             
             do {
                 try managedContext.save()
@@ -146,10 +183,6 @@ class AddProjectViewController: UITableViewController, UIPopoverPresentationCont
         
         // Dismiss PopOver
         dismissAddProjectPopOver()
-    }
-    
-    @IBAction func handleAddToCalendarToggle(_ sender: UISwitch) {
-        addToCalendarFlag = Bool(sender.isOn)
     }
     
     @IBAction func handleProjectNameChange(_ sender: Any) {
@@ -207,11 +240,44 @@ class AddProjectViewController: UITableViewController, UIPopoverPresentationCont
         }
     }
     
-    // Helper to format date
-    func formatDate(_ date: Date) -> String {
-        let dateFormatter : DateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "dd MMM yyyy HH:mm"
-        return dateFormatter.string(from: date)
+    // Creates an event in the EKEventStore
+    func createEvent(_ eventStore: EKEventStore, title: String, startDate: Date, endDate: Date) -> String {
+        let event = EKEvent(eventStore: eventStore)
+        var identifier = ""
+        
+        event.title = title
+        event.startDate = startDate
+        event.endDate = endDate
+        event.calendar = eventStore.defaultCalendarForNewEvents
+        
+        do {
+            try eventStore.save(event, span: .thisEvent)
+            identifier = event.eventIdentifier
+        } catch {
+            let alert = UIAlertController(title: "Error", message: "Calendar event could not be created!", preferredStyle: UIAlertController.Style.alert)
+            alert.addAction(UIAlertAction(title: "OK", style: UIAlertAction.Style.default, handler: nil))
+            self.present(alert, animated: true, completion: nil)
+        }
+        
+        return identifier
+    }
+    
+    // Removes an event from the EKEventStore
+    func deleteEvent(_ eventStore: EKEventStore, eventIdentifier: String) -> Bool {
+        var sucess = false
+        let eventToRemove = eventStore.event(withIdentifier: eventIdentifier)
+        if eventToRemove != nil {
+            do {
+                try eventStore.remove(eventToRemove!, span: .thisEvent)
+                sucess = true
+            } catch {
+                let alert = UIAlertController(title: "Error", message: "Calendar event could not be deleted!", preferredStyle: UIAlertController.Style.alert)
+                alert.addAction(UIAlertAction(title: "OK", style: UIAlertAction.Style.default, handler: nil))
+                self.present(alert, animated: true, completion: nil)
+                sucess = false
+            }
+        }
+        return sucess
     }
 }
 

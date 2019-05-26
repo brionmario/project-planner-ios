@@ -478,9 +478,6 @@
                 <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" id="sqr-tD-5sF">
                     <rect key="frame" x="0.0" y="0.0" width="51" height="31"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <connections>
-                        <action selector="handleAddToCalendarToggle:" destination="bkf-6d-g8Q" eventType="valueChanged" id="JNa-P0-A4i"/>
-                    </connections>
                 </switch>
             </objects>
             <point key="canvasLocation" x="2065.7393850658855" y="-630.46875"/>

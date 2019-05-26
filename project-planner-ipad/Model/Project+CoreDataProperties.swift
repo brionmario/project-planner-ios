@@ -23,7 +23,7 @@ extension Project {
     @NSManaged public var notes: String
     @NSManaged public var priority: String
     @NSManaged public var startDate: NSDate
-    @NSManaged public var uuid: String
+    @NSManaged public var calendarIdentifier: String?
     @NSManaged public var tasks: NSSet?
 
 }
