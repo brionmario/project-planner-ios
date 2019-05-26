@@ -110,10 +110,10 @@ class AddTaskViewController: UITableViewController, UIPopoverPresentationControl
                 uiSwitch.setOn(task.addNotification, animated: true)
             }
             if let label = progressSliderLabel {
-                label.text = "\(task.progress)% Completed"
+                label.text = "\(Int(task.progress))% Completed"
             }
             if let label = progressLabel {
-                label.text = "\(task.progress)%"
+                label.text = "\(Int(task.progress))%"
             }
             if let slider = progressSlider {
                 slider.value = task.progress / 100

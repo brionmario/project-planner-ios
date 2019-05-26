@@ -32,7 +32,7 @@ class ProjectTableViewCell: UITableViewCell {
         self.cellDelegate?.customCell(cell: self, sender: sender as! UIButton, data: notes)
     }
     
-    func commonInit(_ projectName: String, priority: String, dueDate: Date, notes: String) {
+    func commonInit(_ projectName: String, taskProgress: CGFloat, priority: String, dueDate: Date, notes: String) {
         var iconName = "ic-flag-green"
         if priority == "Low" {
             iconName = "ic-flag-green"

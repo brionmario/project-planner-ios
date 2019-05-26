@@ -42,7 +42,6 @@
                                         <rect key="frame" x="0.0" y="239" width="991" height="50"/>
                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                                         <items>
-                                            <barButtonItem style="plain" systemItem="flexibleSpace" id="Um2-Ay-5Xc"/>
                                             <barButtonItem systemItem="add" id="xf2-vj-gs2">
                                                 <connections>
                                                     <segue destination="TRM-XE-oqK" kind="popoverPresentation" identifier="addTask" popoverAnchorBarButtonItem="xf2-vj-gs2" id="Gq6-wc-StP">
@@ -50,6 +49,7 @@
                                                     </segue>
                                                 </connections>
                                             </barButtonItem>
+                                            <barButtonItem style="plain" systemItem="flexibleSpace" id="Um2-Ay-5Xc"/>
                                             <barButtonItem systemItem="compose" id="kt1-Pk-son">
                                                 <connections>
                                                     <segue destination="TRM-XE-oqK" kind="popoverPresentation" identifier="editTask" popoverAnchorBarButtonItem="kt1-Pk-son" id="EVf-va-RJ4">

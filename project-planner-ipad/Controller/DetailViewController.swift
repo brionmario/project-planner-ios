@@ -267,6 +267,7 @@ class DetailViewController: UIViewController, NSFetchedResultsControllerDelegate
             configureCell(taskTable.cellForRow(at: indexPath!)! as! TaskTableViewCell, withTask: anObject as! Task, index: indexPath!.row)
             taskTable.moveRow(at: indexPath!, to: newIndexPath!)
         }
+        configureView()
     }
     
     func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {

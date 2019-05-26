@@ -16,6 +16,8 @@ class MasterViewController: UITableViewController, NSFetchedResultsControllerDel
     
     @IBOutlet var projectsTable: UITableView!
     
+    let calculations: Calculations = Calculations()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -141,7 +143,8 @@ class MasterViewController: UITableViewController, NSFetchedResultsControllerDel
     }
 
     func configureCell(_ cell: ProjectTableViewCell, withProject project: Project) {
-        cell.commonInit(project.name, priority: project.priority, dueDate: project.dueDate as Date, notes: project.notes)
+        let projectProgress = calculations.getProjectProgress(project.tasks!.allObjects as! [Task])
+        cell.commonInit(project.name, taskProgress: CGFloat(projectProgress), priority: project.priority, dueDate: project.dueDate as Date, notes: project.notes)
     }
 
     // MARK: - Fetched results controller
