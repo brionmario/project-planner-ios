@@ -19,9 +19,9 @@ class AddTaskViewController: UITableViewController, UIPopoverPresentationControl
     var taskProgressPickerVisible = false
     var selectedProject: Project?
     var editingMode: Bool = false
+    let now = Date()
     
     let formatter: Formatter = Formatter()
-    let now = Date()
     
     @IBOutlet weak var dueDateLabel: UILabel!
     @IBOutlet weak var startDateLabel: UILabel!

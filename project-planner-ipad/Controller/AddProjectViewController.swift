@@ -13,10 +13,12 @@ import CoreData
 class AddProjectViewController: UITableViewController, UIPopoverPresentationControllerDelegate, UITextViewDelegate {
     
     var projects: [NSManagedObject] = []
-    var endDate : Date!
     var addToCalendarFlag: Bool = false
     var datePickerVisible = false
     var editingMode: Bool = false
+    let now = Date();
+    
+    let formatter: Formatter = Formatter()
     
     @IBOutlet weak var endDateLabel: UILabel!
     @IBOutlet weak var projectNameTextField: UITextField!
@@ -43,14 +45,13 @@ class AddProjectViewController: UITableViewController, UIPopoverPresentationCont
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        var now = Date();
         endDatePicker.minimumDate = now
         
         if !editingMode {
             // Set initial end date to one hour ahead of current time
-            now.addTimeInterval(TimeInterval(60.00 * 60.00))
-            endDate = now // Set the raw end date field variable
-            endDateLabel.text = formatDate(endDate)
+            var time = Date()
+            time.addTimeInterval(TimeInterval(60.00 * 60.00))
+            endDateLabel.text = formatter.formatDate(time)
             
             // Settings the placeholder for notes UITextView
             notesTextView.delegate = self
@@ -80,7 +81,6 @@ class AddProjectViewController: UITableViewController, UIPopoverPresentationCont
                 endDate.text = formatDate(editingProject?.dueDate as! Date)
             }
             if let endDatePicker = endDatePicker {
-                endDate = editingProject?.dueDate as! Date
                 endDatePicker.date = editingProject?.dueDate as! Date
             }
             if let addToCalendar = addToCalendarSwitch {
@@ -97,7 +97,6 @@ class AddProjectViewController: UITableViewController, UIPopoverPresentationCont
     }
     
     @IBAction func handleDateChange(_ sender: UIDatePicker) {
-        endDate = sender.date // Set the raw end date field variable
         endDateLabel.text = formatDate(sender.date)
     }
     
@@ -126,7 +125,7 @@ class AddProjectViewController: UITableViewController, UIPopoverPresentationCont
             project.setValue(projectNameTextField.text, forKeyPath: "name")
             project.setValue(notesTextView.text, forKeyPath: "notes")
             project.setValue(Date(), forKeyPath: "startDate")
-            project.setValue(endDate, forKeyPath: "dueDate")
+            project.setValue(endDatePicker.date, forKeyPath: "dueDate")
             project.setValue(priority, forKeyPath: "priority")
             project.setValue(addToCalendarFlag, forKeyPath: "addToCalendar")
             
