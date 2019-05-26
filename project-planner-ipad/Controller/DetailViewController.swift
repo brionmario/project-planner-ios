@@ -88,19 +88,19 @@ class DetailViewController: UIViewController, NSFetchedResultsControllerDelegate
             
             DispatchQueue.main.async {
                 let colours = self.colours.getProgressGradient(projectProgress)
-                self.projectProgressBar.customSubtitle = "Completed"
-                self.projectProgressBar.startGradientColor = colours[0]
-                self.projectProgressBar.endGradientColor = colours[1]
-                self.projectProgressBar.progress = CGFloat(projectProgress) / 100
+                self.projectProgressBar?.customSubtitle = "Completed"
+                self.projectProgressBar?.startGradientColor = colours[0]
+                self.projectProgressBar?.endGradientColor = colours[1]
+                self.projectProgressBar?.progress = CGFloat(projectProgress) / 100
             }
             
             DispatchQueue.main.async {
                 let colours = self.colours.getProgressGradient(daysLeftProgress, negative: true)
-                self.daysRemainingProgressBar.customTitle = "\(daysRemaining)"
-                self.daysRemainingProgressBar.customSubtitle = "Days Left"
-                self.daysRemainingProgressBar.startGradientColor = colours[0]
-                self.daysRemainingProgressBar.endGradientColor = colours[1]
-                self.daysRemainingProgressBar.progress =  CGFloat(daysLeftProgress) / 100
+                self.daysRemainingProgressBar?.customTitle = "\(daysRemaining)"
+                self.daysRemainingProgressBar?.customSubtitle = "Days Left"
+                self.daysRemainingProgressBar?.startGradientColor = colours[0]
+                self.daysRemainingProgressBar?.endGradientColor = colours[1]
+                self.daysRemainingProgressBar?.progress =  CGFloat(daysLeftProgress) / 100
             }
         }
     }
@@ -165,7 +165,7 @@ class DetailViewController: UIViewController, NSFetchedResultsControllerDelegate
     }
     
     func configureCell(_ cell: TaskTableViewCell, withTask task: Task, index: Int) {
-        print("Related Project", task.project)
+        //print("Related Project", task.project)
         cell.commonInit(task.name, taskProgress: CGFloat(task.progress), startDate: task.startDate as Date, dueDate: task.dueDate as Date, taskNo: index + 1)
     }
     
@@ -181,10 +181,12 @@ class DetailViewController: UIViewController, NSFetchedResultsControllerDelegate
         // Set the batch size to a suitable number.
         fetchRequest.fetchBatchSize = 20
         
-        // Setting a predicate
-        let predicate = NSPredicate(format: "%K == %@", "project", selectedProject as! Project)
-        print("Selected Project", selectedProject?.name)
-        fetchRequest.predicate = predicate
+        if selectedProject != nil {
+            // Setting a predicate
+            let predicate = NSPredicate(format: "%K == %@", "project", selectedProject as! Project)
+            print("Selected Project", selectedProject?.name)
+            fetchRequest.predicate = predicate
+        }
 
         
         // Edit the sort key as appropriate.
