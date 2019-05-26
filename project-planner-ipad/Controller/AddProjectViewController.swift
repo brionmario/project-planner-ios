@@ -128,6 +128,7 @@ class AddProjectViewController: UITableViewController, UIPopoverPresentationCont
             project.setValue(endDatePicker.date, forKeyPath: "dueDate")
             project.setValue(priority, forKeyPath: "priority")
             project.setValue(addToCalendarFlag, forKeyPath: "addToCalendar")
+            project.setValue(UUID().uuidString, forKey: "uuid")
             
             do {
                 try managedContext.save()
