@@ -153,7 +153,7 @@ class CircularProgressBar: UIView {
         subTitleTextLayer?.string = subtitle
         foregroundLayer?.strokeEnd = progress
         
-        gradientLayer.colors = [startGradientColor.cgColor, endGradientColor.cgColor]
+        gradientLayer?.colors = [startGradientColor.cgColor, endGradientColor.cgColor]
     }
     
 }
