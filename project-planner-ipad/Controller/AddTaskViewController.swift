@@ -110,8 +110,8 @@ class AddTaskViewController: UITableViewController, UIPopoverPresentationControl
             task.setValue(dueDate, forKeyPath: "dueDate")
             task.setValue(Bool(addNotificationSwitch.isOn), forKeyPath: "addNotification")
             task.setValue(Float(progressSlider.value * 100), forKey: "progress")
-            task.setValue(selectedProject, forKey: "project")
-            // selectedProject?.addToTasks((task as? Task)!)
+            
+            selectedProject?.addToTasks((task as? Task)!)
             
             do {
                 try managedContext.save()
