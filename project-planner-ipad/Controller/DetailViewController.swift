@@ -27,6 +27,13 @@ class DetailViewController: UIViewController, NSFetchedResultsControllerDelegate
     
     let now = Date()
     
+    var selectedProject: Project? {
+        didSet {
+            // Update the view.
+            configureView()
+        }
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -115,13 +122,13 @@ class DetailViewController: UIViewController, NSFetchedResultsControllerDelegate
         }
     }
 
-    var selectedProject: Project? {
-        didSet {
-            // Update the view.
-            configureView()
-        }
+    @IBAction func handleAddEventClick(_ sender: Any) {
+        
     }
-
+    
+    @IBAction func handleRefreshClick(_ sender: Any) {
+    }
+    
     // MARK: - Segues
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {

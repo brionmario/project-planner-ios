@@ -141,7 +141,18 @@
                     </view>
                     <toolbarItems/>
                     <navigationItem key="navigationItem" title="Tasks" id="mOI-FS-AaM">
-                        <barButtonItem key="rightBarButtonItem" title="Item" image="ic_calendar_plus" landscapeImage="ic_calendar_plus_landscape" id="8Xb-bd-xgl"/>
+                        <rightBarButtonItems>
+                            <barButtonItem systemItem="refresh" id="30d-ZL-Z2I">
+                                <connections>
+                                    <action selector="handleRefreshClick:" destination="JEX-9P-axG" id="bNi-sj-0O5"/>
+                                </connections>
+                            </barButtonItem>
+                            <barButtonItem title="Item" image="ic_calendar_plus" landscapeImage="ic_calendar_plus_landscape" id="8Xb-bd-xgl">
+                                <connections>
+                                    <action selector="handleAddEventClick:" destination="JEX-9P-axG" id="flF-3N-7RL"/>
+                                </connections>
+                            </barButtonItem>
+                        </rightBarButtonItems>
                     </navigationItem>
                     <connections>
                         <outlet property="daysRemainingProgressBar" destination="08V-hP-eSe" id="Bu7-RA-VgA"/>

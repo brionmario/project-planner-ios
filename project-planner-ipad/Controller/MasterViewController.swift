@@ -255,4 +255,3 @@ extension MasterViewController: ProjectTableViewCellDelegate {
         self.showPopoverFrom(cell: cell, forButton: button, forNotes: data)
     }
 }
-
