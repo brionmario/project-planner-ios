@@ -8,6 +8,7 @@
 
 import UIKit
 import CoreData
+import EventKit
 
 class DetailViewController: UIViewController, NSFetchedResultsControllerDelegate, UITableViewDelegate, UITableViewDataSource, UIPopoverPresentationControllerDelegate {
     
@@ -129,7 +130,27 @@ class DetailViewController: UIViewController, NSFetchedResultsControllerDelegate
     }
 
     @IBAction func handleAddEventClick(_ sender: Any) {
+        let eventStore = EKEventStore()
         
+        if let project = selectedProject {
+            if !project.addToCalendar {
+                if (EKEventStore.authorizationStatus(for: .event) != EKAuthorizationStatus.authorized) {
+                    eventStore.requestAccess(to: .event, completion: {
+                        granted, error in
+                        self.createEvent(eventStore, title: project.name, startDate: project.startDate as Date, endDate: project.dueDate as Date)
+                    })
+                } else {
+                    createEvent(eventStore, title: project.name, startDate: project.startDate as Date, endDate: project.dueDate as Date)
+                }
+                let alert = UIAlertController(title: "Success", message: "The project was added to the Calendar!", preferredStyle: UIAlertController.Style.alert)
+                alert.addAction(UIAlertAction(title: "OK", style: UIAlertAction.Style.default, handler: nil))
+                self.present(alert, animated: true, completion: nil)
+            } else {
+                let alert = UIAlertController(title: "Warning", message: "The project is already on the Calendar!", preferredStyle: UIAlertController.Style.alert)
+                alert.addAction(UIAlertAction(title: "OK", style: UIAlertAction.Style.default, handler: nil))
+                self.present(alert, animated: true, completion: nil)
+            }
+        }
     }
     
     @IBAction func handleRefreshClick(_ sender: Any) {
@@ -307,6 +328,28 @@ class DetailViewController: UIViewController, NSFetchedResultsControllerDelegate
                 present(popoverController, animated: true, completion: nil)
             }
         }
+    }
+    
+    // Creates an event in the EKEventStore
+    func createEvent(_ eventStore: EKEventStore, title: String, startDate: Date, endDate: Date) -> String {
+        let event = EKEvent(eventStore: eventStore)
+        var identifier = ""
+        
+        event.title = title
+        event.startDate = startDate
+        event.endDate = endDate
+        event.calendar = eventStore.defaultCalendarForNewEvents
+        
+        do {
+            try eventStore.save(event, span: .thisEvent)
+            identifier = event.eventIdentifier
+        } catch {
+            let alert = UIAlertController(title: "Error", message: "Calendar event could not be created!", preferredStyle: UIAlertController.Style.alert)
+            alert.addAction(UIAlertAction(title: "OK", style: UIAlertAction.Style.default, handler: nil))
+            self.present(alert, animated: true, completion: nil)
+        }
+        
+        return identifier
     }
 }
 
