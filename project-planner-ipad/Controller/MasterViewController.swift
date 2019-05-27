@@ -36,15 +36,7 @@ class MasterViewController: UITableViewController, NSFetchedResultsControllerDel
         super.viewWillAppear(animated)
         
         // Set the default selected row
-        let indexPath = IndexPath(row: 0, section: 0)
-        if tableView.hasRowAtIndexPath(indexPath: indexPath as NSIndexPath) {
-            tableView.selectRow(at: indexPath, animated: true, scrollPosition: .bottom)
-            
-            if let indexPath = tableView.indexPathForSelectedRow {
-                let object = fetchedResultsController.object(at: indexPath)
-                self.performSegue(withIdentifier: "showProjectDetails", sender: object)
-            }
-        }
+        autoSelectTableRow()
     }
 
 
@@ -130,7 +122,7 @@ class MasterViewController: UITableViewController, NSFetchedResultsControllerDel
         if editingStyle == .delete {
             let context = fetchedResultsController.managedObjectContext
             context.delete(fetchedResultsController.object(at: indexPath))
-                
+            
             do {
                 try context.save()
             } catch {
@@ -140,6 +132,10 @@ class MasterViewController: UITableViewController, NSFetchedResultsControllerDel
                 fatalError("Unresolved error \(nserror), \(nserror.userInfo)")
             }
         }
+    }
+    
+    override func tableView(_ tableView: UITableView, didEndEditingRowAt indexPath: IndexPath?) {
+        autoSelectTableRow()
     }
 
     func configureCell(_ cell: ProjectTableViewCell, withProject project: Project) {
@@ -179,6 +175,9 @@ class MasterViewController: UITableViewController, NSFetchedResultsControllerDel
              fatalError("Unresolved error \(nserror), \(nserror.userInfo)")
         }
         
+        // update UI
+        autoSelectTableRow()
+        
         return _fetchedResultsController!
     }
     
@@ -211,6 +210,9 @@ class MasterViewController: UITableViewController, NSFetchedResultsControllerDel
                 configureCell(tableView.cellForRow(at: indexPath!)! as! ProjectTableViewCell, withProject: anObject as! Project)
                 tableView.moveRow(at: indexPath!, to: newIndexPath!)
         }
+        
+        // update UI
+        autoSelectTableRow()
     }
 
     func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
@@ -248,6 +250,20 @@ class MasterViewController: UITableViewController, NSFetchedResultsControllerDel
         }
     }
 
+    func autoSelectTableRow() {
+        let indexPath = IndexPath(row: 0, section: 0)
+        if tableView.hasRowAtIndexPath(indexPath: indexPath as NSIndexPath) {
+            tableView.selectRow(at: indexPath, animated: true, scrollPosition: .bottom)
+            
+            if let indexPath = tableView.indexPathForSelectedRow {
+                let object = fetchedResultsController.object(at: indexPath)
+                self.performSegue(withIdentifier: "showProjectDetails", sender: object)
+            }
+        } else {
+            let empty = {}
+            self.performSegue(withIdentifier: "showProjectDetails", sender: empty)
+        }
+    }
 }
 
 extension MasterViewController: ProjectTableViewCellDelegate {

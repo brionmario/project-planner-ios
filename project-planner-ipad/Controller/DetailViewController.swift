@@ -17,6 +17,7 @@ class DetailViewController: UIViewController, NSFetchedResultsControllerDelegate
     @IBOutlet weak var priorityLabel: UILabel!
     @IBOutlet weak var projectProgressBar: CircularProgressBar!
     @IBOutlet weak var daysRemainingProgressBar: CircularProgressBar!
+    @IBOutlet weak var projectDetailView: UIView!
     
     let formatter: Formatter = Formatter()
     let calculations: Calculations = Calculations()
@@ -119,6 +120,11 @@ class DetailViewController: UIViewController, NSFetchedResultsControllerDelegate
                 self.daysRemainingProgressBar?.endGradientColor = colours[1]
                 self.daysRemainingProgressBar?.progress =  CGFloat(daysLeftProgress) / 100
             }
+        }
+        
+        if selectedProject == nil {
+            taskTable.isHidden = true
+            projectDetailView.isHidden = true
         }
     }
 

@@ -182,11 +182,19 @@ class AddProjectViewController: UITableViewController, UIPopoverPresentationCont
             
             project.setValue(projectName, forKeyPath: "name")
             project.setValue(notes, forKeyPath: "notes")
-            project.setValue(now, forKeyPath: "startDate")
+            
+            if editingMode {
+                project.setValue(editingProject?.startDate, forKeyPath: "startDate")
+            } else {
+                project.setValue(now, forKeyPath: "startDate")
+            }
+            
             project.setValue(endDate, forKeyPath: "dueDate")
             project.setValue(priority, forKeyPath: "priority")
             project.setValue(addedToCalendar, forKeyPath: "addToCalendar")
             project.setValue(calendarIdentifier, forKey: "calendarIdentifier")
+            
+            print(project)
             
             do {
                 try managedContext.save()

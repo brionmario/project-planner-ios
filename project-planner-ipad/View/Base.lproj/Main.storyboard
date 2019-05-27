@@ -158,6 +158,7 @@
                         <outlet property="daysRemainingProgressBar" destination="08V-hP-eSe" id="Bu7-RA-VgA"/>
                         <outlet property="dueDateLabel" destination="QUo-N5-ptb" id="t0w-9M-N7n"/>
                         <outlet property="priorityLabel" destination="ltW-Ab-YcG" id="Bsv-Er-lrs"/>
+                        <outlet property="projectDetailView" destination="B5E-Ma-IRi" id="Kcv-G5-BlQ"/>
                         <outlet property="projectNameLabel" destination="NsL-Jf-aHj" id="KEl-82-chQ"/>
                         <outlet property="projectProgressBar" destination="0eU-Kf-6R2" id="zhF-DX-h4R"/>
                         <outlet property="taskTable" destination="dDI-U2-QUE" id="gYJ-Rc-d6a"/>
