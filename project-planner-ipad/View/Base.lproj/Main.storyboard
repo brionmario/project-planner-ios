@@ -155,10 +155,13 @@
                         </rightBarButtonItems>
                     </navigationItem>
                     <connections>
+                        <outlet property="addTaskButton" destination="xf2-vj-gs2" id="h7U-Dr-jQN"/>
+                        <outlet property="addToCalendarButton" destination="8Xb-bd-xgl" id="K7j-YX-yal"/>
                         <outlet property="daysRemainingProgressBar" destination="08V-hP-eSe" id="Bu7-RA-VgA"/>
                         <outlet property="dueDateLabel" destination="QUo-N5-ptb" id="t0w-9M-N7n"/>
+                        <outlet property="editTaskButton" destination="kt1-Pk-son" id="fgZ-ll-ZjL"/>
                         <outlet property="priorityLabel" destination="ltW-Ab-YcG" id="Bsv-Er-lrs"/>
-                        <outlet property="projectDetailView" destination="B5E-Ma-IRi" id="Kcv-G5-BlQ"/>
+                        <outlet property="projectDetailView" destination="eg7-eR-zw6" id="lga-dS-s2d"/>
                         <outlet property="projectNameLabel" destination="NsL-Jf-aHj" id="KEl-82-chQ"/>
                         <outlet property="projectProgressBar" destination="0eU-Kf-6R2" id="zhF-DX-h4R"/>
                         <outlet property="taskTable" destination="dDI-U2-QUE" id="gYJ-Rc-d6a"/>

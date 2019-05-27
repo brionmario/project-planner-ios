@@ -19,6 +19,9 @@ class DetailViewController: UIViewController, NSFetchedResultsControllerDelegate
     @IBOutlet weak var projectProgressBar: CircularProgressBar!
     @IBOutlet weak var daysRemainingProgressBar: CircularProgressBar!
     @IBOutlet weak var projectDetailView: UIView!
+    @IBOutlet weak var addTaskButton: UIBarButtonItem!
+    @IBOutlet weak var editTaskButton: UIBarButtonItem!
+    @IBOutlet weak var addToCalendarButton: UIBarButtonItem!
     
     let formatter: Formatter = Formatter()
     let calculations: Calculations = Calculations()
@@ -124,8 +127,8 @@ class DetailViewController: UIViewController, NSFetchedResultsControllerDelegate
         }
         
         if selectedProject == nil {
-            taskTable.isHidden = true
-            projectDetailView.isHidden = true
+            //taskTable.isHidden = true
+            //projectDetailView.isHidden = true
         }
     }
 
@@ -194,6 +197,23 @@ class DetailViewController: UIViewController, NSFetchedResultsControllerDelegate
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         let sectionInfo = fetchedResultsController.sections![section]
+        
+        if selectedProject == nil {
+            projectDetailView.isHidden = true
+            projectProgressBar.isHidden = true
+            daysRemainingProgressBar.isHidden = true
+            addTaskButton.isEnabled = false
+            editTaskButton.isEnabled = false
+            addToCalendarButton.isEnabled = false
+            taskTable.setEmptyMessage("Add a new Project to manage Tasks", UIColor.black)
+            return 0
+        }
+        
+        if sectionInfo.numberOfObjects == 0 {
+            editTaskButton.isEnabled = false
+            taskTable.setEmptyMessage("No tasks available for this Project", UIColor.black)
+        }
+        
         return sectionInfo.numberOfObjects
     }
     
