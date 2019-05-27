@@ -185,6 +185,7 @@ class DetailViewController: UIViewController, NSFetchedResultsControllerDelegate
                 let object = fetchedResultsController.object(at: indexPath)
                 let controller = (segue.destination as! UINavigationController).topViewController as! AddTaskViewController
                 controller.editingTask = object as Task
+                controller.selectedProject = selectedProject
             }
         }
     }

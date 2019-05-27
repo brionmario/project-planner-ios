@@ -51,6 +51,9 @@ class AddTaskViewController: UITableViewController, UIPopoverPresentationControl
         // Configure User Notification Center
         notificationCenter.delegate = self
         
+        // set end date picker maximum date to project end date
+        dueDatePicker.maximumDate = selectedProject!.dueDate as! Date
+        
         if !editingMode {
             // Set start date to current
             startDatePicker.minimumDate = now
