@@ -112,6 +112,10 @@ class AddProjectViewController: UITableViewController, UIPopoverPresentationCont
             let addToCalendarFlag = Bool(addToCalendarSwitch.isOn)
             let eventStore = EKEventStore()
             
+            let projectName = projectNameTextField.text
+            let endDate = endDatePicker.date
+            let notes = notesTextView.text
+            
             guard let appDelegate =
                 UIApplication.shared.delegate as? AppDelegate else {
                     return
@@ -135,10 +139,10 @@ class AddProjectViewController: UITableViewController, UIPopoverPresentationCont
                             if (EKEventStore.authorizationStatus(for: .event) != EKAuthorizationStatus.authorized) {
                                 eventStore.requestAccess(to: .event, completion: {
                                     granted, error in
-                                    calendarIdentifier = self.createEvent(eventStore, title: self.projectNameTextField.text!, startDate: self.now, endDate: self.endDatePicker.date)
+                                    calendarIdentifier = self.createEvent(eventStore, title: projectName!, startDate: self.now, endDate: endDate)
                                 })
                             } else {
-                                calendarIdentifier = createEvent(eventStore, title: projectNameTextField.text!, startDate: now, endDate: endDatePicker.date)
+                                calendarIdentifier = createEvent(eventStore, title: projectName!, startDate: now, endDate: endDate)
                             }
                         }
                     }
@@ -146,10 +150,10 @@ class AddProjectViewController: UITableViewController, UIPopoverPresentationCont
                     if (EKEventStore.authorizationStatus(for: .event) != EKAuthorizationStatus.authorized) {
                         eventStore.requestAccess(to: .event, completion: {
                             granted, error in
-                            calendarIdentifier = self.createEvent(eventStore, title: self.projectNameTextField.text!, startDate: self.now, endDate: self.endDatePicker.date)
+                            calendarIdentifier = self.createEvent(eventStore, title: projectName!, startDate: self.now, endDate: endDate)
                         })
                     } else {
-                        calendarIdentifier = createEvent(eventStore, title: projectNameTextField.text!, startDate: now, endDate: endDatePicker.date)
+                        calendarIdentifier = createEvent(eventStore, title: projectName!, startDate: now, endDate: endDate)
                     }
                 }
                 if calendarIdentifier != "" {
@@ -176,10 +180,10 @@ class AddProjectViewController: UITableViewController, UIPopoverPresentationCont
                 addedToCalendar = false
             }
             
-            project.setValue(projectNameTextField.text, forKeyPath: "name")
-            project.setValue(notesTextView.text, forKeyPath: "notes")
+            project.setValue(projectName, forKeyPath: "name")
+            project.setValue(notes, forKeyPath: "notes")
             project.setValue(now, forKeyPath: "startDate")
-            project.setValue(endDatePicker.date, forKeyPath: "dueDate")
+            project.setValue(endDate, forKeyPath: "dueDate")
             project.setValue(priority, forKeyPath: "priority")
             project.setValue(addedToCalendar, forKeyPath: "addToCalendar")
             project.setValue(calendarIdentifier, forKey: "calendarIdentifier")

@@ -222,7 +222,7 @@ class DetailViewController: UIViewController, NSFetchedResultsControllerDelegate
 
         // Edit the section name key path and cache name if appropriate.
         // nil for section name key path means "no sections".
-        let aFetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: self.managedObjectContext!, sectionNameKeyPath: nil, cacheName: "\(selectedProject)-project")
+        let aFetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: self.managedObjectContext!, sectionNameKeyPath: nil, cacheName: "\(UUID().uuidString)-project")
         aFetchedResultsController.delegate = self
         _fetchedResultsController = aFetchedResultsController
         

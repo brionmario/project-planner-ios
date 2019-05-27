@@ -9,8 +9,9 @@
 import Foundation
 import UIKit
 import CoreData
+import UserNotifications
 
-class AddTaskViewController: UITableViewController, UIPopoverPresentationControllerDelegate, UITextViewDelegate {
+class AddTaskViewController: UITableViewController, UIPopoverPresentationControllerDelegate, UITextViewDelegate, UNUserNotificationCenterDelegate {
     
     var tasks: [NSManagedObject] = []
     let dateFormatter : DateFormatter = DateFormatter()
@@ -22,6 +23,7 @@ class AddTaskViewController: UITableViewController, UIPopoverPresentationControl
     let now = Date()
     
     let formatter: Formatter = Formatter()
+    let notificationCenter = UNUserNotificationCenter.current()
     
     @IBOutlet weak var dueDateLabel: UILabel!
     @IBOutlet weak var startDateLabel: UILabel!
@@ -45,19 +47,20 @@ class AddTaskViewController: UITableViewController, UIPopoverPresentationControl
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        // Disable past dates on datepickers
-        startDatePicker.minimumDate = now
-        dueDatePicker.minimumDate = now
 
+        // Configure User Notification Center
+        notificationCenter.delegate = self
+        
         if !editingMode {
             // Set start date to current
+            startDatePicker.minimumDate = now
             startDateLabel.text = formatter.formatDate(now)
             
-            // Set end date to one hour ahead of current time
+            // Set end date to one minute ahead of current time
             var time = Date()
-            time.addTimeInterval(TimeInterval(60.00 * 60.00))
+            time.addTimeInterval(TimeInterval(60.00))
             dueDateLabel.text = formatter.formatDate(time)
+            dueDatePicker.minimumDate = time
             
             // Settings the placeholder for notes UITextView
             notesTextView.delegate = self
@@ -118,8 +121,8 @@ class AddTaskViewController: UITableViewController, UIPopoverPresentationControl
     @IBAction func handleStartDateChange(_ sender: UIDatePicker) {
         startDateLabel.text = formatter.formatDate(sender.date)
         
-        // Set end date minimum to one hour ahead the start date
-        let dueDate = sender.date.addingTimeInterval(TimeInterval(60.00 * 60.00))
+        // Set end date minimum to one minute ahead the start date
+        let dueDate = sender.date.addingTimeInterval(TimeInterval(60.00))
         dueDatePicker.minimumDate = dueDate
         dueDateLabel.text = formatter.formatDate(dueDate)
     }
@@ -127,8 +130,8 @@ class AddTaskViewController: UITableViewController, UIPopoverPresentationControl
     @IBAction func handleEndDateChange(_ sender: UIDatePicker) {
         dueDateLabel.text = formatter.formatDate(sender.date)
         
-        // Set start date maximum to one hour before the end date
-        startDatePicker.maximumDate = sender.date.addingTimeInterval(-TimeInterval(60.00 * 60.00))
+        // Set start date maximum to one minute before the end date
+        startDatePicker.maximumDate = sender.date.addingTimeInterval(-TimeInterval(60.00))
     }
     
     @IBAction func handleCancelButtonClick(_ sender: UIBarButtonItem) {
@@ -137,6 +140,13 @@ class AddTaskViewController: UITableViewController, UIPopoverPresentationControl
     
     @IBAction func handleAddButtonClick(_ sender: UIBarButtonItem) {
         if validate() {
+            let taskName = taskNameTextField.text
+            let dueDate = dueDatePicker.date
+            let startDate = startDatePicker.date
+            let progress = Float(progressSlider.value * 100)
+            
+            let addNotificationFlag = Bool(addNotificationSwitch.isOn)
+            
             guard let appDelegate =
                 UIApplication.shared.delegate as? AppDelegate else {
                     return
@@ -153,12 +163,36 @@ class AddTaskViewController: UITableViewController, UIPopoverPresentationControl
                 task = NSManagedObject(entity: entity, insertInto: managedContext)
             }
             
-            task.setValue(taskNameTextField.text, forKeyPath: "name")
+            if addNotificationFlag {
+                notificationCenter.getNotificationSettings { (notificationSettings) in
+                    switch notificationSettings.authorizationStatus {
+                    case .notDetermined:
+                        self.requestAuthorization(completionHandler: { (success) in
+                            guard success else { return }
+                            print("Scheduling Notifications")
+                            // Schedule Local Notification
+                            self.scheduleLocalNotification("Task Deadline Missed!", subtitle: "Task: \(taskName!)", body: "You missed the deadline for the task '\(taskName!)' which was due on \(self.formatter.formatDate(dueDate)).", date: dueDate)
+                            print("Scheduled Notifications")
+                        })
+                    case .authorized:
+                        
+                        // Schedule Local Notification
+                        self.scheduleLocalNotification("Task Deadline Missed!", subtitle: "Task: \(taskName!)", body: "You missed the deadline for the task '\(taskName!)' which was due on \(self.formatter.formatDate(dueDate)).", date: dueDate)
+                        print("Scheduled Notifications")
+                    case .denied:
+                        print("Application Not Allowed to Display Notifications")
+                    case .provisional:
+                        print("Application Not Allowed to Display Notifications")
+                    }
+                }
+            }
+            
+            task.setValue(taskName, forKeyPath: "name")
             task.setValue(notesTextView.text, forKeyPath: "notes")
-            task.setValue(startDatePicker.date, forKeyPath: "startDate")
-            task.setValue(dueDatePicker.date, forKeyPath: "dueDate")
-            task.setValue(Bool(addNotificationSwitch.isOn), forKeyPath: "addNotification")
-            task.setValue(Float(progressSlider.value * 100), forKey: "progress")
+            task.setValue(startDate, forKeyPath: "startDate")
+            task.setValue(dueDate, forKeyPath: "dueDate")
+            task.setValue(addNotificationFlag, forKeyPath: "addNotification")
+            task.setValue(progress, forKey: "progress")
             
             selectedProject?.addToTasks((task as? Task)!)
             
@@ -180,6 +214,42 @@ class AddTaskViewController: UITableViewController, UIPopoverPresentationControl
         dismissAddTaskPopOver()
     }
     
+    func scheduleLocalNotification(_ title: String, subtitle: String, body: String, date: Date) {
+        // Create Notification Content
+        let notificationContent = UNMutableNotificationContent()
+        let identifier = "\(UUID().uuidString)"
+        
+        // Configure Notification Content
+        notificationContent.title = title
+        notificationContent.subtitle = subtitle
+        notificationContent.body = body
+        
+        // Add Trigger
+        // let notificationTrigger = UNTimeIntervalNotificationTrigger(timeInterval: 20.0, repeats: false)
+        let triggerDate = Calendar.current.dateComponents([.year, .month, .day, .hour, .minute, .second], from: date)
+        let trigger = UNCalendarNotificationTrigger(dateMatching: triggerDate, repeats: false)
+        
+        // Create Notification Request
+        let notificationRequest = UNNotificationRequest(identifier: identifier, content: notificationContent, trigger: trigger)
+        
+        // Add Request to User Notification Center
+        notificationCenter.add(notificationRequest) { (error) in
+            if let error = error {
+                print("Unable to Add Notification Request (\(error), \(error.localizedDescription))")
+            }
+        }
+    }
+    
+    func requestAuthorization(completionHandler: @escaping (_ success: Bool) -> ()) {
+        // Request Authorization
+        notificationCenter.requestAuthorization(options: [.alert, .sound, .badge]) { (success, error) in
+            if let error = error {
+                print("Request Authorization Failed (\(error), \(error.localizedDescription))")
+            }
+            completionHandler(success)
+        }
+    }
+
     @IBAction func handleTaskNameChange(_ sender: Any) {
         toggleAddButtonEnability()
     }
@@ -231,6 +301,10 @@ class AddTaskViewController: UITableViewController, UIPopoverPresentationControl
             return true
         }
         return false
+    }
+    
+    func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
+        completionHandler([.alert])
     }
 }
 

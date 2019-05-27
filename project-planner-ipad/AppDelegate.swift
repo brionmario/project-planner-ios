@@ -8,14 +8,30 @@
 
 import UIKit
 import CoreData
+import UserNotifications
 
 @UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDelegate {
+class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDelegate, UNUserNotificationCenterDelegate {
 
     var window: UIWindow?
-
+    let notificationCenter = UNUserNotificationCenter.current()
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+        // Local Notification
+        UNUserNotificationCenter.current().requestAuthorization(options:
+            [.badge,.alert,.sound])
+        {
+            (sucess,error) in
+            if error != nil {
+                print("Error Found, \(error?.localizedDescription ?? "")")
+                
+            } else {
+                print("Authorized by the user")
+            }
+        }
+        
+        UNUserNotificationCenter.current().delegate = self
+        
         // Override point for customization after application launch.
         let splitViewController = self.window!.rootViewController as! UISplitViewController
         let navigationController = splitViewController.viewControllers[splitViewController.viewControllers.count-1] as! UINavigationController
@@ -109,4 +125,3 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
     }
 
 }
-
